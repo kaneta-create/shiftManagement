@@ -72,16 +72,18 @@ const timeOptions = generateTimeOptions();
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">シフト登録</h2>
         </template> -->
 
-        <div class="py-12">
-        <div class="max-w-10xl mx-auto sm:px-6 lg:px-8">
+        <div class="py-4 bg-gray-300">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div>
-                        <h1 class="sm:text-4xl text-3xl font-bold title-font mb-4 text-gray-900">シフト登録</h1>
+                        <h1 class="sm:text-4xl text-center text-3xl font-mono title-font mb-4 text-gray-900">シフト登録</h1>
+                        <p class="lg:w-2/3 mx-auto text-center leading-relaxed text-sm text-gray-600">社員番号を入力して時間を選択してください</p>
+
                     </div>
                     <form @submit.prevent="storeDefaultShift">
                         <!-- 社員番号 -->
-                        <div class="text-center mb-4">
+                        <div class="text-center mb-4 mt-8">
                             <label for="employee_number" class="mr-2">社員番号:</label>
                             <input type="text" id="employee_number" required name="employee_number" v-model="form.employee_number" class="border border-gray-500 p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 rounded"/>
                             <div v-if="props.errors.employee_number" class="text-red-600">
@@ -90,7 +92,7 @@ const timeOptions = generateTimeOptions();
                         </div>
 
                         <!-- 曜日リスト -->
-                        <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+                        <div class="lg:w-3/4 w-full mx-auto overflow-auto">
                             <table class="table-auto w-full text-left whitespace-no-wrap">
                             <thead>
                                 <tr>

@@ -211,25 +211,27 @@ console.log(props.errors.isDayOff);
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">シフト表</h2>
         </template> -->
 
-        <div class="py-12">
+        <div class="py-4 bg-gray-300">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="bg-white overflow-hidden sm:rounded-lg">
                     <div id="printB" class="p-6 text-gray-900">
                         <div class="flex flex-col text-center w-full mb-8">
                             <FlashMessage/>
                             <form @submit.prevent="updateActualShift(props.userId)">
-                            <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">シフト表</h1>
+                            <h1 class="sm:text-4xl text-3xl font-mono title-font mb-4 text-gray-900">シフト表</h1>
+                            <p class="lg:w-2/3 mx-auto text-center leading-relaxed text-sm text-gray-600">変更したい日付を選択して入力してください</p>
+                            
                             <div class="mb-4">
                                 <div v-if="receivedShiftUpdates && receivedShiftUpdates.length > 0" class="mb-4">
                                     <h3 class="mt-8 mb-4 text-xl">変更内容</h3>
                                     <table class="table-auto w-full text-left whitespace-no-wrap">
                                         <thead>
                                         <tr>
-                                            <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-500">名前</th>
+                                            <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-500 rounded-l">名前</th>
                                             <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-500">日付</th>
                                             <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-500">出勤時間</th>
                                             <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-500">退勤時間</th>
-                                            <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-500 text-nowrap">
+                                            <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-500 text-nowrap rounded-r">
                                                 削除
                                             </th>
                                         </tr>
@@ -261,10 +263,12 @@ console.log(props.errors.isDayOff);
                                     </div>
                                     
                                 </div>
-    
-                                <button type="button" id="printBtn" @click="printPage" class="bg-indigo-500 hover:bg-indigo-600 flex text-white py-2 px-4 rounded">
-                                    印刷
-                                </button>
+                                <div class="flex justify-end">
+                                    <button type="button" id="printBtn" @click="printPage" class="bg-indigo-500 hover:bg-indigo-600 flex text-white py-2 px-4 rounded">
+                                        印刷
+                                    </button>
+                                </div>
+                                
                             </div>
                             <div class="print_shift">
                             <div class="overflow-x-auto">
@@ -283,12 +287,11 @@ console.log(props.errors.isDayOff);
                                             <div>名前</div> -->
                                         </th>
                                         <!-- 他のヘッダ要素 -->
-                                        <th v-for="(day, index) in dayInfos" :key="index" class="border border-gray-300 bg-gray-500 text-white">
-                                            <div>
+                                        <th v-for="(day, index) in dayInfos" :key="index" class="border border-gray-300 text-center bg-gray-500 text-white">
+                                            <div class="hover:bg-indigo-500 border-b flex justify-center items-center">
                                                 <RequestShiftModal 
                                                      :date="day.date" :shifts="props.shifts" :full_date="day.full_date" :Ymd_date="day.Ymd_date" :userId="props.userId" @updateShiftData="handleShiftDataUpdate"/>
                                             </div>
-                                            <div class="border-t border-gray-300 mt-1"></div>
                                             <div class=" text-center">{{ day.day_of_week }}</div>
                                         </th>
                                         <th class="text-center border text-xs border-gray-300 bg-gray-500 text-white">

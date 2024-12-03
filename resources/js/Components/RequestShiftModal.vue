@@ -83,61 +83,71 @@ const timeOptions = generateTimeOptions();
 </script>
 
 <template>
-     <div v-show="isShow" class="modal" id="modal-1"> 
-        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+    <div v-show="isShow" class="modal" id="modal-1">
+      <div class="modal__overlay" tabindex="-1" data-micromodal-close>
         <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
-            <header class="modal__header">
-            <h2 class="modal__title" id="modal-1-title">
-                シフト変更
+          <header class="modal__header">
+            <h2 class="modal__title text-xl text-center font-bold" id="modal-1-title">
+              シフト変更
             </h2>
-            <!-- <button class="modal__close" aria-label="Close modal" data-micromodal-close></button> -->
-            </header>
-            <!-- <form @submit.prevent="updateActualShift(props.userId)"> -->
-            <main class="modal__content" id="modal-1-content">
-                <div class="flex flex-col space-y-2">
-                    <div>
-                        <p>{{ props.full_date }}</p>
-                        <div class="mr-2 mt-4">
-                            <input name="isDayOff" type="radio" value="0" v-model="form.isDayOff" id="isDayOff">
-                            <span class="mr-2">出勤</span>
-                            
-                            <input name="isDayOff" type="radio" value="1" v-model="form.isDayOff" id="isDayOff">
-                            <span>休日</span>
-                        </div>
-                        <div v-if="form.isDayOff === ''" class="text-red-500">*出勤か休日のいずれかを選択してください。</div>
-                        <div class="mt-2">
-                            <div>
-                                <label for="clock_in">出勤時間</label>
-                                <select class="mb-2" v-model="form.clock_in" id="clock_in">
-                                    <option value="" disabled>-- 選択 --</option>
-                                    <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
-                                </select>
-                            </div>
-                            <div class="mt-2">
-                                <label for="clock_out">退勤時間</label>
-                                <select class="mb-2" v-model="form.clock_out" id="clock_out">
-                                    <option value="" disabled>-- 選択 --</option>
-                                    <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
-                                </select>
-                            </div>
-                            <div v-if="form.clock_in && form.clock_out&& form.clock_in >= form.clock_out && form.clock_out != '00:00'"
-                                            class="text-red-500">*出勤時間は退勤時間より前に設定してください。</div>
-
-                        </div>
-                    </div>
-                </div>
-            </main>
-            <footer class="modal__footer">
-                <div class="flex justify-between">
-                    <button @click="toggleStatus" type="button" class="modal__btn" data-micromodal-close aria-label="Close this dialog window">閉じる</button>
-                    <button id="store" type="button" @click="shiftDataUpdate" class="text-white bg-indigo-500 border-0 text-sm px-4 py-3 focus:outline-none hover:bg-indigo-600 rounded">保存</button>
-                </div>
-            </footer>
-            <!-- </form> -->
+          </header>
+          <main class="modal__content" id="modal-1-content">
+            <div class="flex flex-col space-y-4">
+              <p class="text-gray-600">{{ props.full_date }}</p>
+  
+              <div class="flex items-center space-x-4">
+                <label class="flex items-center">
+                  <input name="isDayOff" type="radio" value="0" v-model="form.isDayOff" class="mr-2">
+                  <span>出勤</span>
+                </label>
+                <label class="flex items-center">
+                  <input name="isDayOff" type="radio" value="1" v-model="form.isDayOff" class="mr-2">
+                  <span>休日</span>
+                </label>
+              </div>
+  
+              <div v-if="form.isDayOff === ''" class="text-red-500 text-sm">
+                *出勤か休日のいずれかを選択してください。
+              </div>
+  
+              <div class="mt-4">
+                <label for="clock_in" class="block text-gray-700">出勤時間</label>
+                <select v-model="form.clock_in" id="clock_in" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <option value="" disabled>-- 選択 --</option>
+                  <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
+                </select>
+              </div>
+  
+              <div class="mt-4">
+                <label for="clock_out" class="block text-gray-700">退勤時間</label>
+                <select v-model="form.clock_out" id="clock_out" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <option value="" disabled>-- 選択 --</option>
+                  <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
+                </select>
+              </div>
+  
+              <div v-if="form.clock_in && form.clock_out && form.clock_in >= form.clock_out && form.clock_out !== '00:00'" class="text-red-500 text-sm">
+                *出勤時間は退勤時間より前に設定してください。
+              </div>
+            </div>
+          </main>
+  
+          <footer class="modal__footer mt-6">
+            <div class="flex justify-end space-x-4">
+              <button @click="toggleStatus" type="button" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 focus:outline-none">
+                閉じる
+              </button>
+              <button id="store" type="button" @click="shiftDataUpdate" class="px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600 focus:outline-none">
+                保存
+              </button>
+            </div>
+          </footer>
         </div>
-        </div>
+      </div>
     </div>
-    <td>
-        <button @click="new Date(props.Ymd_date) >= new Date().setHours(0,0,0,0) ? toggleStatus()  : null"  class="text-center hover:bg-gray-600" type="button">{{ props.date }}</button>
+    
+    <td class="text-center">
+        <button @click="new Date(props.Ymd_date) >= new Date().setHours(0,0,0,0) ? toggleStatus()  : null" type="button">{{ props.date }}</button>
     </td>
-</template>
+  </template>
+  

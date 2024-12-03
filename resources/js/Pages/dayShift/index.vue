@@ -129,18 +129,21 @@ defineExpose({
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">日別シフト</h2>
         </template> -->
 
-        <div class="py-12">
+        <div class="py-4 bg-gray-300">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
                         <div class="text-center mb-4">
-                            <h1 class="sm:text-4xl text-3xl font-bold title-font mb-4 text-gray-900">シフト表</h1>
+                            <h1 class="sm:text-4xl text-3xl font-mono title-font mb-4 text-gray-900">シフト表</h1>
                             <label for="date" class="mr-2">日付:</label>
                             <input type="date" id="date" name="date" v-model="form.date" :min="todayDate" 
                             :max="maxDate">
-                            <button type="button" id="printBtn" @click="printPage" class="bg-indigo-500 text-white py-2 px-4 rounded flex">
+                            <div class="flex justify-end">
+                              <button type="button" id="printBtn" @click="printPage" class="bg-indigo-500 text-white py-2 px-4 rounded flex">
                                 印刷
-                            </button>
+                              </button>
+                            </div>
+                            
                         </div>
                         <div class="overflow-x-auto">
                           <table class="table-auto w-full text-left whitespace-no-wrap">

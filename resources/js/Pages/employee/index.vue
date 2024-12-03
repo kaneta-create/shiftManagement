@@ -31,8 +31,8 @@ const updateAuthority = () => {
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">従業員管理ページ</h2>
         </template> -->
 
-        <div class="py-4">
-            <div class="max-w-9xl mx-auto sm:px-6 lg:px-8">
+        <div class="py-4 bg-gray-300">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
                         <FlashMessage/>
@@ -42,7 +42,7 @@ const updateAuthority = () => {
                             <!-- <div class="flex flex-col text-center w-full mb-8">
                                 <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">従業員一覧</h1>
                             </div> -->
-                            <h1 class="mb-6 text-3xl text-center font-medium">従業員一覧</h1>
+                            <h1 class="sm:text-4xl text-center text-3xl font-mono title-font mb-4 text-gray-900">従業員一覧</h1>
 
                             <div class="flex justify-end my-4 lg:w-2/3 w-full mx-auto space-x-2">
                                 <Link as="button" :href="route('admins.create')" class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
@@ -57,18 +57,18 @@ const updateAuthority = () => {
                                     <!-- 新規登録 -->
                                 </Link>
                             </div>
-                            <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+                            <div class="lg:w-3/4 w-full mx-auto overflow-auto">
                             <table class="table-auto w-full text-left whitespace-no-wrap">
                                 <thead>
-                                <tr>
+                                <tr class="rounded">
                                     <!-- <th class="px-4 py-3title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">No</th> -->
-                                    <th class="px-4 py-3title-font tracking-wider font-medium text-white text-sm bg-gray-500">社員番号</th>
+                                    <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-500 rounded-l">社員番号</th>
                                     <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-500">名前</th>
                                     <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-500">雇用形態</th>
                                     <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-500">権限</th>
                                     <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-500">パスワード</th>
                                     <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-500">編集</th>
-                                    <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-500" style="white-space: nowrap;">削除</th>
+                                    <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-500 rounded-r" style="white-space: nowrap;">削除</th>
                                 </tr>
                                 </thead>
                                 <tbody>

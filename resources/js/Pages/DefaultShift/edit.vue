@@ -101,13 +101,14 @@ const timeOptions = generateTimeOptions();
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">勤務時間変更</h2>
         </template> -->
 
-        <div class="py-12">
+        <div class="py-4 bg-gray-300">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
                         <div>
-                            <h1 class="sm:text-4xl text-3xl font-bold title-font mb-4 text-gray-900 text-center">シフト登録</h1>
-                            <p class="lg:w-2/3 mx-auto text-center leading-relaxed text-base text-gray-600">社員番号と時間を入力して勤務時間を変更してください</p>
+                            <h1 class="sm:text-4xl text-center text-3xl font-mono title-font mb-4 text-gray-900">シフト登録</h1>
+
+                            <p class="lg:w-2/3 mx-auto text-center leading-relaxed text-sm text-gray-600">社員番号と時間を入力して勤務時間を変更してください</p>
                         </div>
                         <form @submit.prevent="updateDefaultShift(props.employee_id)">
                             <div class="text-center my-8">
@@ -124,7 +125,7 @@ const timeOptions = generateTimeOptions();
                                 </div>
 
                             </div>
-                        <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+                        <div class="lg:w-3/4 w-full mx-auto overflow-auto">
                             <table class="table-fixed w-full">
                                 <thead>
                                 <tr>

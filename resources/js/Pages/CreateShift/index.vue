@@ -208,7 +208,7 @@ function removeShift(index) {
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">シフト表</h2>
         </template> -->
 
-        <div class="py-12">
+        <div class="py-4 bg-gray-300">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
@@ -216,7 +216,9 @@ function removeShift(index) {
                             <FlashMessage/>
                             <form @submit.prevent="updateActualShift(props.userId)">
 
-                            <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 test-center text-gray-900">シフト表</h1>
+                            <h1 class="sm:text-4xl text-3xl font-mono title-font mb-4 text-gray-900">シフト表</h1>
+                            <p class="lg:w-2/3 mx-auto text-center leading-relaxed text-sm text-gray-600">変更したい日付を選択して入力してください</p>
+
                             
                             <div class="mb-4">
                                 <div v-if="receivedShiftUpdates && receivedShiftUpdates.length > 0" class="mb-4">
@@ -257,9 +259,11 @@ function removeShift(index) {
                                     </div>
                                     
                                 </div>
-                                <button type="button" id="printBtn" @click="printPage" class="bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded flex justify-end">
-                                    印刷
-                                </button>
+                                <div class="flex justify-end">
+                                    <button type="button" id="printBtn" @click="printPage" class="bg-indigo-500 hover:bg-indigo-600 flex text-white py-2 px-4 rounded">
+                                        印刷
+                                    </button>
+                                </div>
                             </div>
                             <!-- <button class="text-white bg-indigo-500 border-0 text-sm px-4 py-3 focus:outline-none hover:bg-indigo-600 rounded">登録</button> -->
 
@@ -280,11 +284,11 @@ function removeShift(index) {
                                         </th>
                                         <!-- 他のヘッダ要素 -->
                                         <th v-for="(day, index) in dayInfos" :key="index" class="bg-gray-500 border text-white border-gray-300 text-center">
-                                            <div class="text-center">
+                                            <div class="flex justify-center border-b hover:bg-indigo-500">
                                                 <CreateShiftModal
                                                          :date="day.date" :full_date="day.full_date" :Ymd_date="day.Ymd_date" :userId="props.userId" :employeeInfo="props.names"  @updateShiftData="handleShiftDataUpdate"/>
                                             </div>
-                                            <div class=" mt-1"></div>
+                                            <!-- <div class=" mt-1"></div> -->
                                             <div>{{ day.day_of_week }}</div>
                                         </th>
                                         <th class="border text-xs text-white border-gray-300 bg-gray-500">

@@ -38,14 +38,14 @@ console.log(props.errors.name);
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">従業員登録</h2>
         </template> -->
 
-        <div class="py-12">
-    <div class="max-w-9xl mx-auto sm:px-6 lg:px-8">
+        <div class="py-4 bg-gray-300">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-md sm:rounded-lg">
             <div class="p-8 text-gray-900">
                 <section class="text-gray-700 body-font relative">
                     <div class="container px-5 py-10 mx-auto">
                         <div class="flex flex-col text-center w-full mb-6">
-                            <h1 class="sm:text-4xl text-3xl font-bold title-font mb-4 text-gray-900">従業員登録</h1>
+                            <h1 class="sm:text-4xl text-3xl font-mono text-center title-font mb-4 text-gray-900">従業員登録</h1>
                             <p class="lg:w-2/3 mx-auto leading-relaxed text-base text-gray-600">新しい従業員の情報を登録してください。</p>
                         </div>
                         <form @submit.prevent="storeEmployee">
