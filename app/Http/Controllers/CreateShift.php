@@ -54,7 +54,9 @@ class CreateShift extends Controller
                     // clock_in と clock_out を Carbon インスタンスに変換
                     $clockIn = Carbon::createFromFormat('H:i:s', $workingHour->clock_in);
                     $clockOut = Carbon::createFromFormat('H:i:s', $workingHour->clock_out);
-                    
+                    if ($workingHour->clock_out === '00:00:00') {
+                        $clockOut->addDay();  // 翌日の時間として計算
+                    }
                     // 出勤時間を分単位で計算し、合計出勤時間に追加
                     $totalMinutes = $clockOut->diffInMinutes($clockIn);
                     $totalWorkingHours += $totalMinutes;

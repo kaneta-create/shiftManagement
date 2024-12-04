@@ -76,23 +76,23 @@ const submit = () => {
                 </label>
             </div>
 
-            <div class="flex items-center justify-around mt-4">
+            <div class="flex items-center justify-between mt-4">
                 <Link 
                     :href="route('passwordSets.index')" dusk="initial-login-link"
                     class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    初回ログイン
+                    初回ログインはこちら
                 </Link>
-                <Link
+                <!-- <Link
                     v-if="canResetPassword"
                     
                     :href="route('password.request')"
                     class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                     パスワードをお忘れですか?
-                </Link>
+                </Link> -->
 
-                <PrimaryButton id="register-button" class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <PrimaryButton id="register-button" class="ml-4 bg-indigo-500" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     ログイン
                 </PrimaryButton>
 

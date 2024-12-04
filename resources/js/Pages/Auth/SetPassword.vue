@@ -120,7 +120,7 @@ const submit = () => {
             </div>
 
             <div  class="flex items-center justify-end mt-4">
-                <PrimaryButton id="register-button" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <PrimaryButton id="register-button" class="bg-indigo-500" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     登録
                 </PrimaryButton>
             </div>
