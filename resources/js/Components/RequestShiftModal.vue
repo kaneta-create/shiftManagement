@@ -15,32 +15,76 @@ const props = defineProps({
     shifts: Array,
     errors: Object
 });
-// console.log(props.shifts, props.Ymd_date)
+
+const filteredshifts = props.shifts.filter(shift => shift.full_date == props.Ymd_date && shift.employee_id == props.userId && shift.clock_in != shift.clock_out);
+
+function formattedTime(time){
+  if(time == 2400){
+    return '24:00';
+  }else{
+    const hours = String(Math.floor(time / 100)).padStart(2, '0');
+    const minutes = String(time % 100).padStart(2, '0');  
+    return `${hours}:${minutes}`;
+  }
+    
+  
+}
+let shiftInfos = [];
+if (filteredshifts.length > 0) {
+  if(filteredshifts[0].clock_out == 2400){
+    filteredshifts[0].clock_out = 2359
+  }
+  shiftInfos = [
+    {
+      clock_in: formattedTime(filteredshifts[0].clock_in),
+      clock_out: formattedTime(filteredshifts[0].clock_out) ,
+      full_date: filteredshifts[0].full_date,
+      isDayOff: '0'
+    }
+  ]
+} else {
+  shiftInfos = [
+    {
+      clock_in: null,
+      clock_out: null,
+      isDayOff: ''
+    }
+  ]
+}
+
 const form = reactive({
-    isDayOff: '',
-    clock_in: '',
-    clock_out: '',
+    isDayOff: shiftInfos[0].isDayOff ? '0' : '1',
+    clock_in: shiftInfos[0].clock_in ? shiftInfos[0].clock_in : '',
+    clock_out: shiftInfos[0].clock_out ? shiftInfos[0].clock_out : '',
     date:'',
     employee_id: props.userId
 })
-
-console.log(props.isDayOff)
 
 onMounted(() => {
     form.date = props.Ymd_date;
 });
 
-
 watch(() => props.Ymd_date, (newDate) => {
     form.date = newDate;
+
 });
 const emit = defineEmits(['updateShiftData']);
 const shiftUpdates = [];
 const shiftDataUpdate = () => {
     if (form.isDayOff === '') {
         console.error('出勤か休日のいずれかを選択してください。');
+        alert('出勤か休日のいずれかを選択してください。')
         return;
     }
+    if(form.isDayOff == 0 && form.clock_in == ''){
+      // console.error('出勤時間を入力してください。')
+      alert('出勤時間を入力してください')
+      return;
+    } else if (form.isDayOff == 0 && form.clock_out == ''){
+      // console.error('退勤時間を入力してください。')
+      alert("退勤時間を入力してください")
+      return;
+    };
     let shiftData = {
         isDayOff: form.isDayOff,
         clock_in: form.clock_in,
@@ -51,22 +95,26 @@ const shiftDataUpdate = () => {
         
     shiftUpdates.push(JSON.parse(JSON.stringify(shiftData)));
     toggleStatus(); // モーダルを閉じる
-    // console.log(shiftUpdates);
 
     emit('updateShiftData', shiftUpdates);  
 };
 
 
-watch(form, (newForm) => {
-    Object.keys(newForm).forEach(day => {
-        const startTime = newForm[day].start_time;
-        const endTime = newForm[day].end_time;
-            if (startTime && endTime && startTime >= endTime) {
-                console.error(`${day} の出勤時間は退勤時間より前に設定してください。`);
-            }        
-        }); 
-})
 
+watch(form, (newForm) => {
+  Object.keys(newForm).forEach(day => {
+    const dayData = newForm[day];
+    if (dayData && dayData.start_time && dayData.end_time) {
+      const startTime = dayData.start_time;
+      const endTime = dayData.end_time;
+      
+      // startTime と endTime のチェック
+      if (startTime >= endTime) {
+        console.error(`${day} の出勤時間は退勤時間より前に設定してください。`);
+      }
+    } 
+  });
+});
 const generateTimeOptions = () => {
     const times = [];
     for (let hour = 0; hour < 24; hour++) {
@@ -76,10 +124,12 @@ const generateTimeOptions = () => {
             times.push(`${formattedHour}:${formattedMinute}`);
         }
     }
+    times.push('23:59');
     return times;
 };
 
 const timeOptions = generateTimeOptions();
+
 </script>
 
 <template>
@@ -87,23 +137,23 @@ const timeOptions = generateTimeOptions();
       <div class="modal__overlay" tabindex="-1" data-micromodal-close>
         <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
           <header class="modal__header">
-            <h2 class="modal__title text-xl text-center font-bold" id="modal-1-title">
+            <h2 class="modal__title text-indigo-600 text-xl text-center font-bold" id="modal-1-title">
               シフト変更
             </h2>
           </header>
           <main class="modal__content" id="modal-1-content">
             <div class="flex flex-col space-y-4">
-              <p class="text-gray-600">{{ props.full_date }}</p>
+              <p class="text-gray-600">{{ props.full_date }}　{{ props.shifts[0].day_of_week }}曜日</p>
   
-              <div class="flex items-center space-x-4">
-                <label class="flex items-center">
-                  <input name="isDayOff" type="radio" value="0" v-model="form.isDayOff" class="mr-2">
-                  <span>出勤</span>
-                </label>
-                <label class="flex items-center">
-                  <input name="isDayOff" type="radio" value="1" v-model="form.isDayOff" class="mr-2">
-                  <span>休日</span>
-                </label>
+              <div class="flex justify-center items-center space-x-4">
+                <div class="flex items-center">
+                  <input name="isDayOff" id="work" type="radio" value="0" v-model="form.isDayOff" class="mr-2">
+                  <label id="work">出勤</label>
+                </div>
+                <div class="flex items-center">
+                  <input name="isDayOff" id="holiday" type="radio" value="1" v-model="form.isDayOff" class="mr-2" >
+                  <label id="holiday">休日</label>
+                </div>
               </div>
   
               <div v-if="form.isDayOff === ''" class="text-red-500 text-sm">
@@ -112,16 +162,16 @@ const timeOptions = generateTimeOptions();
   
               <div class="mt-4">
                 <label for="clock_in" class="block text-gray-700">出勤時間</label>
-                <select v-model="form.clock_in" id="clock_in" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                  <option value="" disabled>-- 選択 --</option>
+                <select v-model="form.clock_in"  :disabled="form.isDayOff === '1'" :class="{'bg-gray-200': form.isDayOff === '1', 'cursor-not-allowed': form.isDayOff === '1'}" id="clock_in" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <option value="" disabled>選択</option>
                   <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
                 </select>
               </div>
   
               <div class="mt-4">
                 <label for="clock_out" class="block text-gray-700">退勤時間</label>
-                <select v-model="form.clock_out" id="clock_out" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                  <option value="" disabled>-- 選択 --</option>
+                <select v-model="form.clock_out"  :disabled="form.isDayOff === '1'" :class="{'bg-gray-200': form.isDayOff === '1', 'cursor-not-allowed': form.isDayOff === '1'}" id="clock_out" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <option value="" disabled>選択</option>
                   <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
                 </select>
               </div>

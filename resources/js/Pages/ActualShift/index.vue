@@ -18,7 +18,7 @@ const props = defineProps({
     userRole: Object,
     errors: Object
 })
-console.log(props.totalWorkingTimes);
+console.log(props);
 const workDay = (employee_name, name, date, attendance_date) => {
     if(name === employee_name && date === attendance_date){
         return true;
@@ -81,6 +81,7 @@ const updateDayInfos = () => {
 const updateShift = () => {
     dayShiftInfos.value = [];
     props.shifts.forEach((shift, index) => {
+        // console.log(shift[0])
         if (selectMonth.selectedMonth === props.month[0][1].firstMonth) {
             if (shift[0]) {
                 dayShiftInfos.value.push({
@@ -89,6 +90,7 @@ const updateShift = () => {
                     clock_out:shift[0].clock_out,
                     day_of_week:shift[0].day_of_week,
                     employee_name:shift[0].employee_name,
+                    full_date:shift[0].full_date,
                     date:shift[0].date                  
                 });
             }
@@ -100,6 +102,7 @@ const updateShift = () => {
                     clock_out:shift[1].clock_out,
                     day_of_week:shift[1].day_of_week,
                     employee_name:shift[1].employee_name,
+                    full_date:shift[1].full_date,
                     date:shift[1].date     
                 });
             }
@@ -111,6 +114,7 @@ const updateShift = () => {
                     clock_out:shift[2].clock_out,
                     day_of_week:shift[2].day_of_week,
                     employee_name:shift[2].employee_name,
+                    full_date:shift[2].full_date,
                     date:shift[2].date     
                 });
             }
@@ -290,7 +294,7 @@ console.log(props.errors.isDayOff);
                                         <th v-for="(day, index) in dayInfos" :key="index" class="border border-gray-300 text-center bg-gray-500 text-white">
                                             <div class="hover:bg-indigo-500 border-b flex justify-center items-center">
                                                 <RequestShiftModal 
-                                                     :date="day.date" :shifts="props.shifts" :full_date="day.full_date" :Ymd_date="day.Ymd_date" :userId="props.userId" @updateShiftData="handleShiftDataUpdate"/>
+                                                     :date="day.date" :shifts="dayShiftInfos" :full_date="day.full_date" :Ymd_date="day.Ymd_date" :userId="props.userId" @updateShiftData="handleShiftDataUpdate"/>
                                             </div>
                                             <div class=" text-center">{{ day.day_of_week }}</div>
                                         </th>

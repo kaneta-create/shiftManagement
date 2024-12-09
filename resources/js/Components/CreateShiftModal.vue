@@ -111,7 +111,7 @@ const timeOptions = generateTimeOptions();
                                 <input :disabled="form.isDayOff == 1 || form.isDayOff == ''"
                                 :class="form.isDayOff == 1 ? 'bg-gray-200 cursor-not-allowed' : ''" id="clock_in" name="clock_in" type="time" v-model="form.clock_in"> -->
                                 <label for="clock_in">出勤時間</label>
-                                <select id="clock_in" class="mb-2" v-model="form.clock_in">
+                                <select id="clock_in" class="mb-2" v-model="form.clock_in" :disabled="form.isDayOff === '1'" :class="{'bg-gray-200': form.isDayOff === '1', 'cursor-not-allowed': form.isDayOff === '1'}">
                                     <option value="" disabled>-- 選択 --</option>
                                     <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
                                 </select>
@@ -121,7 +121,7 @@ const timeOptions = generateTimeOptions();
                                 <input :disabled="form.isDayOff == 1 || form.isDayOff == ''"
                                 :class="form.isDayOff == 1 ? 'bg-gray-200 cursor-not-allowed' : ''" id="clock_out" name="clock_out" type="time" v-model="form.clock_out"> -->
                                 <label for="clock_out">退勤時間</label>
-                                <select id="clock_out" class="mb-2" v-model="form.clock_out">
+                                <select id="clock_out" class="mb-2" v-model="form.clock_out" :disabled="form.isDayOff === '1'" :class="{'bg-gray-200': form.isDayOff === '1', 'cursor-not-allowed': form.isDayOff === '1'}">
                                     <option value="" disabled>-- 選択 --</option>
                                     <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
                                 </select>
