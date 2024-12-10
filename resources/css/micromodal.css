@@ -17,7 +17,7 @@
   .modal__container {
     background-color: #fff;
     padding: 30px;
-    max-width: 80vw;
+    max-width: 1200px;
     max-height: 600vh;
     border-radius: 4px;
     overflow-y: auto;
@@ -35,9 +35,9 @@
     margin-bottom: 0;
     font-weight: 600;
     font-size: 1.25rem;
-    line-height: 1.25;
-    color: #464b5251;
-    box-sizing: border-box;
+    /* line-height: 1.25; */
+    color: #343ecdc0;
+    /* box-sizing: border-box; */
   }
   
   .modal__close {

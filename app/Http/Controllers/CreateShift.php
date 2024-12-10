@@ -186,6 +186,7 @@ class CreateShift extends Controller
                             'clock_in' => $formattedClockIn,
                             'clock_out' => $formattedClockOut,
                             'day_of_week' => $dayOfWeek,
+                            'full_date' => Carbon::parse($shift->date)->format('Y-m-d'),
                             'date' => Carbon::parse($shift->date)->format('j'),
                         ],
                         

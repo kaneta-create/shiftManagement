@@ -91,6 +91,7 @@ const updateShift = () => {
                     clock_out:shift[0].clock_out,
                     day_of_week:shift[0].day_of_week,
                     employee_name:shift[0].employee_name,
+                    full_date:shift[0].full_date,
                     date:shift[0].date                  
                 });
             }
@@ -102,6 +103,7 @@ const updateShift = () => {
                     clock_out:shift[1].clock_out,
                     day_of_week:shift[1].day_of_week,
                     employee_name:shift[1].employee_name,
+                    full_date:shift[1].full_date,
                     date:shift[1].date     
                 });
             }
@@ -113,6 +115,7 @@ const updateShift = () => {
                     clock_out:shift[2].clock_out,
                     day_of_week:shift[2].day_of_week,
                     employee_name:shift[2].employee_name,
+                    full_date:shift[2].full_date,
                     date:shift[2].date     
                 });
             }
@@ -286,7 +289,7 @@ function removeShift(index) {
                                         <th v-for="(day, index) in dayInfos" :key="index" class="bg-gray-500 border text-white border-gray-300 text-center">
                                             <div class="flex justify-center border-b hover:bg-indigo-500">
                                                 <CreateShiftModal
-                                                         :date="day.date" :full_date="day.full_date" :Ymd_date="day.Ymd_date" :userId="props.userId" :employeeInfo="props.names"  @updateShiftData="handleShiftDataUpdate"/>
+                                                         :date="day.date" :shifts="dayShiftInfos" :full_date="day.full_date" :Ymd_date="day.Ymd_date" :userId="props.userId" :employeeInfo="props.names"  @updateShiftData="handleShiftDataUpdate"/>
                                             </div>
                                             <!-- <div class=" mt-1"></div> -->
                                             <div>{{ day.day_of_week }}</div>
