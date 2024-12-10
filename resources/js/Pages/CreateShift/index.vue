@@ -296,7 +296,7 @@ function removeShift(index) {
                                         </th>
                                         <th class="border text-xs text-white border-gray-300 bg-gray-500">
                                             <div class="">時間</div>
-                                            <div class="border-t border-gray-300 mt-1"></div>
+                                            <div class="border-t border-gray-300 my-1"></div>
                                             <div class="vertical-text">日数</div>
                                         </th>
                                     </tr>

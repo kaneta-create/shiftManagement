@@ -146,14 +146,14 @@ const timeOptions = generateTimeOptions();
             <main class="modal__content" id="modal-1-content">
             <div class="flex flex-col space-y-4">
                 <!-- 日付 -->
-                <div class="flex items-center">
-                <label class="text-gray-700 text-nowrap w-1/3 font-semibold text-center">日付:</label>
-                <span>{{ props.full_date }} ({{ props.shifts[0].day_of_week }}曜日)</span>
+                <div class="mb-4">
+                <!-- <label class="text-gray-700 text-nowrap w-1/3 text-left ml-14">日付:</label> -->
+                    <p class="text-center text-lg">{{ props.full_date }} ({{ props.shifts[0].day_of_week }}曜日)</p>
                 </div>
 
                 <!-- 従業員名 -->
                 <div class="flex items-center">
-                <label for="employee_name" class="text-gray-700 text-nowrap w-1/3 text-center">従業員名：</label>
+                <label for="employee_name" class="text-gray-700 text-nowrap w-1/3 text-center">従業員名 ：</label>
                 <select id="employee_name" name="employee_name" v-model="form.employee_name" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <option value="" disabled>選択</option>
                     <option v-for="name in props.employeeInfo" :key="name.employee_id" :value="name.employee_name">
@@ -164,7 +164,7 @@ const timeOptions = generateTimeOptions();
 
                 <!-- 出勤 or 休日 -->
                 <div class="flex items-center">
-                <label class="text-gray-700 text-nowrap w-1/4 text-center">出勤 / 休日：</label>
+                <label class="text-gray-700 text-nowrap w-1/4 text-center ml-1">出勤 / 休日 ：</label>
                 <div class="ml-1 w-full flex justify-around">
                     <div class="flex items-center">
                         <input name="isDayOff" type="radio" value="0" v-model="form.isDayOff" class="mr-1">
@@ -180,7 +180,7 @@ const timeOptions = generateTimeOptions();
 
                 <!-- 出勤時間 -->
                 <div class="flex items-center">
-                <label for="clock_in" class="text-gray-700 text-nowrap w-1/3">出勤時間：</label>
+                <label for="clock_in" class="text-gray-700 text-nowrap w-1/3 text-center">出勤時間 ：</label>
                 <select v-model="form.clock_in" :disabled="form.isDayOff === '1'" :class="{'bg-gray-200': form.isDayOff === '1', 'cursor-not-allowed': form.isDayOff === '1'}" id="clock_in" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <option value="" disabled>選択</option>
                     <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
@@ -189,7 +189,7 @@ const timeOptions = generateTimeOptions();
 
                 <!-- 退勤時間 -->
                 <div class="flex items-center">
-                <label for="clock_out" class="text-gray-700 text-nowrap w-1/3">退勤時間：</label>
+                <label for="clock_out" class="text-gray-700 text-nowrap w-1/3 text-center">退勤時間 ：</label>
                 <select v-model="form.clock_out" :disabled="form.isDayOff === '1'" :class="{'bg-gray-200': form.isDayOff === '1', 'cursor-not-allowed': form.isDayOff === '1'}" id="clock_out" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <option value="" disabled>選択</option>
                     <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>

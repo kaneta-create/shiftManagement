@@ -53,7 +53,7 @@ if (filteredshifts.length > 0) {
 }
 
 const form = reactive({
-    isDayOff: shiftInfos[0].isDayOff ? '0' : '1',
+    isDayOff: '',
     clock_in: shiftInfos[0].clock_in ? shiftInfos[0].clock_in : '',
     clock_out: shiftInfos[0].clock_out ? shiftInfos[0].clock_out : '',
     date:'',
@@ -133,71 +133,76 @@ const timeOptions = generateTimeOptions();
 </script>
 
 <template>
-    <div v-show="isShow" class="modal" id="modal-1">
-      <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-        <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
-          <header class="modal__header">
-            <h2 class="modal__title text-indigo-600 text-xl text-center font-bold" id="modal-1-title">
-              シフト変更
-            </h2>
-          </header>
-          <main class="modal__content" id="modal-1-content">
-            <div class="flex flex-col space-y-4">
-              <p class="text-gray-600">{{ props.full_date }}　{{ props.shifts[0].day_of_week }}曜日</p>
-  
-              <div class="flex justify-center items-center space-x-4">
-                <div class="flex items-center">
-                  <input name="isDayOff" id="work" type="radio" value="0" v-model="form.isDayOff" class="mr-2">
-                  <label id="work">出勤</label>
-                </div>
-                <div class="flex items-center">
-                  <input name="isDayOff" id="holiday" type="radio" value="1" v-model="form.isDayOff" class="mr-2" >
-                  <label id="holiday">休日</label>
-                </div>
-              </div>
-  
-              <div v-if="form.isDayOff === ''" class="text-red-500 text-sm">
-                *出勤か休日のいずれかを選択してください。
-              </div>
-  
-              <div class="mt-4">
-                <label for="clock_in" class="block text-gray-700">出勤時間</label>
-                <select v-model="form.clock_in"  :disabled="form.isDayOff === '1'" :class="{'bg-gray-200': form.isDayOff === '1', 'cursor-not-allowed': form.isDayOff === '1'}" id="clock_in" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                  <option value="" disabled>選択</option>
-                  <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
-                </select>
-              </div>
-  
-              <div class="mt-4">
-                <label for="clock_out" class="block text-gray-700">退勤時間</label>
-                <select v-model="form.clock_out"  :disabled="form.isDayOff === '1'" :class="{'bg-gray-200': form.isDayOff === '1', 'cursor-not-allowed': form.isDayOff === '1'}" id="clock_out" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                  <option value="" disabled>選択</option>
-                  <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
-                </select>
-              </div>
-  
-              <div v-if="form.clock_in && form.clock_out && form.clock_in >= form.clock_out && form.clock_out !== '00:00'" class="text-red-500 text-sm">
-                *出勤時間は退勤時間より前に設定してください。
-              </div>
-            </div>
-          </main>
-  
-          <footer class="modal__footer mt-6">
-            <div class="flex justify-end space-x-4">
-              <button @click="toggleStatus" type="button" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 focus:outline-none">
-                閉じる
-              </button>
-              <button id="store" type="button" @click="shiftDataUpdate" class="px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600 focus:outline-none">
-                保存
-              </button>
-            </div>
-          </footer>
-        </div>
-      </div>
-    </div>
-    
-    <td class="text-center">
-        <button @click="new Date(props.Ymd_date) >= new Date().setHours(0,0,0,0) ? toggleStatus()  : null" type="button">{{ props.date }}</button>
-    </td>
-  </template>
+  <div v-show="isShow" class="modal" id="modal-1"> 
+     <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+     <div class="bg-white w-2/5 p-8 rounded-lg shadow-sm items-center" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+         <header class="">
+         <h2 class="text-2xl font-bold text-center border-b pb-2 text-indigo-500" id="modal-1-title">
+             シフト変更
+         </h2>
+         </header>
+         <main class="modal__content" id="modal-1-content">
+         <div class="flex flex-col space-y-4">
+             <!-- 日付 -->
+             <div class="mb-4">
+             <!-- <label class="text-gray-700 text-nowrap w-1/3 text-left ml-14">日付:</label> -->
+                 <p class="text-center text-lg">{{ props.full_date }} ({{ props.shifts[0].day_of_week }}曜日)</p>
+             </div>
+
+             <!-- 出勤 or 休日 -->
+             <div class="flex items-center">
+             <label class="text-gray-700 text-nowrap w-1/4 text-center ml-1">出勤 / 休日 ：</label>
+             <div class="ml-1 w-full flex justify-around">
+                 <div class="flex items-center">
+                     <input name="isDayOff" type="radio" value="0" v-model="form.isDayOff" class="mr-1">
+                     <span class="mr-4">出勤</span>
+                 </div>
+                 <div class="flex items-center">
+                     <input name="isDayOff" type="radio" value="1" v-model="form.isDayOff" class="mr-1">
+                     <span>休日</span>
+                 </div>
+                 
+             </div>
+             </div>
+
+             <!-- 出勤時間 -->
+             <div class="flex items-center">
+             <label for="clock_in" class="text-gray-700 text-nowrap w-1/3 text-center">出勤時間 ：</label>
+             <select v-model="form.clock_in" :disabled="form.isDayOff === '1'" :class="{'bg-gray-200': form.isDayOff === '1', 'cursor-not-allowed': form.isDayOff === '1'}" id="clock_in" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                 <option value="" disabled>選択</option>
+                 <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
+             </select>
+             </div>
+
+             <!-- 退勤時間 -->
+             <div class="flex items-center">
+             <label for="clock_out" class="text-gray-700 text-nowrap w-1/3 text-center">退勤時間 ：</label>
+             <select v-model="form.clock_out" :disabled="form.isDayOff === '1'" :class="{'bg-gray-200': form.isDayOff === '1', 'cursor-not-allowed': form.isDayOff === '1'}" id="clock_out" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                 <option value="" disabled>選択</option>
+                 <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
+             </select>
+             </div>
+
+             <!-- エラー表示 -->
+             <div v-if="form.clock_in && form.clock_out && form.clock_in >= form.clock_out" class="text-red-500 text-sm">
+             出勤時間は退勤時間より前に設定してください。
+             </div>
+         </div>
+         </main>
+         <footer class="modal__footer mt-4">
+         <div class="flex justify-between">
+             <button @click="toggleStatus" type="button" class="modal__btn" data-micromodal-close aria-label="Close this dialog window">閉じる</button>
+             <button type="button" @click="shiftDataUpdate" class="text-white bg-indigo-500 border-0 text-sm px-4 py-3 focus:outline-none hover:bg-indigo-600 rounded">保存</button>
+         </div>
+         </footer>
+     </div>
+
+     </div>
+ </div>
+ <!-- <td 
+ @click="new Date(props.Ymd_date) >= new Date().setHours(0,0,0,0) ? toggleStatus() : null"  class="text-center">{{ props.date }}</td> -->
+ <td>
+     <button @click="new Date(props.Ymd_date) >= new Date().setHours(0,0,0,0) ? toggleStatus()  : null"  class="text-center" type="button">{{ props.date }}</button>
+ </td>
+</template>
   

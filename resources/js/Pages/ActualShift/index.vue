@@ -298,10 +298,10 @@ console.log(props.errors.isDayOff);
                                             </div>
                                             <div class=" text-center">{{ day.day_of_week }}</div>
                                         </th>
-                                        <th class="text-center border text-xs border-gray-300 bg-gray-500 text-white">
-                                            <div class="text-center">時間</div>
-                                            <div class="border-t border-gray-300 mt-1"></div>
-                                            <div class="vertical-text text-center items-center">日数</div>
+                                        <th class="border text-xs border-gray-300 bg-gray-500 text-white">
+                                            <div class="flex justify-around items-center">時間</div>
+                                            <div class="border-t border-gray-300 my-1"></div>
+                                            <div class="vertical-text flex justify-around">日数</div>
                                         </th>
                                     </tr>
                                 </thead>
