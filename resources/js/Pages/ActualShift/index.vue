@@ -192,7 +192,8 @@ function removeShift(index) {
   receivedShiftUpdates.value.splice(index, 1);
 //   receivedShiftUpdates.value = [];
 }
-//削除が選択されたデータは保存せずに更新するようにしたい
+
+const isHovered = ref(false); // ホバー状態を管理
 </script>
 <style>
 @media print{
@@ -284,12 +285,17 @@ function removeShift(index) {
                             </div>
                             <div class="print_shift">
                             <div class="overflow-x-auto">
+                                  <!-- ホバー時に表示するツールチップ -->
+                                <div v-if="isHovered" class="absolute bg-black text-white text-xs rounded py-1 px-2">
+                                    クリックして月を変更できます
+                                </div>
                             <table id="table1"class="min-w-full bg-white border border-gray-300">
                                 <thead>
                                     <tr>
                                         <th id="th1" class="border border-gray-300 bg-gray-100">
                                             <div>
-                                                <select v-model="selectMonth.selectedMonth" class="border-none text-center py-1 bg-gray-100">
+                                               
+                                                <select v-model="selectMonth.selectedMonth" @mouseover="isHovered = true" @mouseleave="isHovered = false" class="border-none text-center py-1 bg-gray-100">
                                                     <option :value="props.month[0][1].firstMonth">{{ props.month[0][1].firstMonth }}</option>
                                                     <option :value="props.month[0][1].secondMonth">{{ props.month[0][1].secondMonth }}</option>
                                                     <option :value="props.month[0][1].thirdMonth">{{ props.month[0][1].thirdMonth }}</option>

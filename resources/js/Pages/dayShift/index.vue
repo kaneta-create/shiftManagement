@@ -132,7 +132,7 @@ defineExpose({
                                     勤務時間
                                 </th>
                                 <th id="th3" v-for="(hour ,index) in props.totalHour" class="py-2 px-2 border-2 border-x-1 title-font tracking-wider font-medium text-white text-sm bg-gray-500 text-center">
-                                  <div class="flex">
+                                  <div class="flex justify-center">
                                     <span>{{ hour.hour }}</span><span>時</span>
                                   </div>  
                                 </th>
