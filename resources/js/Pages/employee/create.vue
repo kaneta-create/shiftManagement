@@ -125,7 +125,7 @@ console.log(props.errors.name);
                                                 dusk="generate-temporary-password" 
                                                 type="button" 
                                                 @click="generateTemporaryPassword" 
-                                                class="text-white py-4 px-2 mr-2 bg-indigo-500 border-0 focus:outline-none hover:bg-indigo-600 rounded text-sm text-nowrap"
+                                                class="text-white py-4 px-2 mr-2 bg-indigo-600 border-0 focus:outline-none hover:bg-indigo-700 rounded text-sm text-nowrap"
                                             >
                                                 仮パスワード発行
                                             </button>
@@ -144,7 +144,7 @@ console.log(props.errors.name);
                                         <button 
                                             dusk="register-button" 
                                             type="submit" 
-                                            class="flex mx-auto text-white bg-indigo-500 border-0 py-3 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+                                            class="flex mx-auto text-white bg-indigo-600 border-0 py-3 px-8 focus:outline-none hover:bg-indigo-700 rounded text-lg"
                                         >
                                             登録
                                         </button>

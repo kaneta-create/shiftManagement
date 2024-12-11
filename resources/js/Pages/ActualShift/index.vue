@@ -185,12 +185,14 @@ const updateActualShift = (id) => {
 
 const clearChangedShift = () => {
     receivedShiftUpdates.value = '';
+    location.reload();
 }
 
 function removeShift(index) {
   receivedShiftUpdates.value.splice(index, 1);
+//   receivedShiftUpdates.value = [];
 }
-console.log(props.errors.isDayOff);
+//削除が選択されたデータは保存せずに更新するようにしたい
 </script>
 <style>
 @media print{
@@ -198,13 +200,19 @@ console.log(props.errors.isDayOff);
         display: none;
     }
 
-    #printBtn {
+    #explanation,#change_shift, #printBtn, h2, nav{
         display: none;
     }
+     
+   table{
+    color:black;
+   }
 
-    h2{
-        display: none;
-    }
+   #th1, #th2, #th3, #td1, #td2, #td3{
+    color: black;
+    border-color:  rgb(160, 160, 160);
+   }
+
 }
 </style>
 <template>
@@ -223,9 +231,9 @@ console.log(props.errors.isDayOff);
                             <FlashMessage/>
                             <form @submit.prevent="updateActualShift(props.userId)">
                             <h1 class="sm:text-4xl text-3xl font-mono title-font mb-4 text-gray-900">シフト表</h1>
-                            <p class="lg:w-2/3 mx-auto text-center leading-relaxed text-sm text-gray-600">変更したい日付を選択して入力してください</p>
+                            <p id="explanation" class="lg:w-2/3 mx-auto text-center leading-relaxed text-sm text-gray-600">変更したい日付を選択して入力してください</p>
                             
-                            <div class="mb-4">
+                            <div id="change_shift" class="mb-4">
                                 <div v-if="receivedShiftUpdates && receivedShiftUpdates.length > 0" class="mb-4">
                                     <h3 class="mt-8 mb-4 text-xl">変更内容</h3>
                                     <table class="table-auto w-full text-left whitespace-no-wrap">
@@ -247,7 +255,7 @@ console.log(props.errors.isDayOff);
                                             <td class="px-4 py-3 border-b-2 border-gray-200">{{ shift.clock_in ? shift.clock_in : '休日' }}</td>
                                             <td class="px-4 py-3 border-b-2 border-gray-200">{{ shift.clock_out ? shift.clock_out : '休日' }}</td>
                                             <td class="border-b-2 border-gray-200 w-10 text-center">
-                                                <button type="button"@click="removeShift(index)" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded text-nowrap">
+                                                <button type="button"@click="removeShift(index)" class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded text-nowrap">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                                     </svg>
@@ -258,17 +266,17 @@ console.log(props.errors.isDayOff);
                                         </tbody>
                                     </table>
                                     <div class="flex justify-around mt-2">
-                                        <button class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
+                                        <button class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded">
                                             変更を確定
                                         </button>
-                                        <button type="button" @click="clearChangedShift" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
+                                        <button type="button" @click="clearChangedShift" class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded">
                                             変更をクリア
                                         </button>
                                     </div>
                                     
                                 </div>
-                                <div class="flex justify-end">
-                                    <button type="button" id="printBtn" @click="printPage" class="bg-indigo-500 hover:bg-indigo-600 flex text-white py-2 px-4 rounded">
+                                <div v-if="receivedShiftUpdates.length == 0" class="flex justify-end mt-4">
+                                    <button type="button" id="printBtn" @click="printPage" class="bg-indigo-600 hover:bg-indigo-700 flex text-white py-2 px-4 rounded">
                                         印刷
                                     </button>
                                 </div>
@@ -276,10 +284,10 @@ console.log(props.errors.isDayOff);
                             </div>
                             <div class="print_shift">
                             <div class="overflow-x-auto">
-                            <table class="min-w-full bg-white border border-gray-300">
+                            <table id="table1"class="min-w-full bg-white border border-gray-300">
                                 <thead>
                                     <tr>
-                                        <th class="border border-gray-300 bg-gray-100">
+                                        <th id="th1" class="border border-gray-300 bg-gray-100">
                                             <div>
                                                 <select v-model="selectMonth.selectedMonth" class="border-none text-center py-1 bg-gray-100">
                                                     <option :value="props.month[0][1].firstMonth">{{ props.month[0][1].firstMonth }}</option>
@@ -291,14 +299,14 @@ console.log(props.errors.isDayOff);
                                             <div>名前</div> -->
                                         </th>
                                         <!-- 他のヘッダ要素 -->
-                                        <th v-for="(day, index) in dayInfos" :key="index" class="border border-gray-300 text-center bg-gray-500 text-white">
+                                        <th id="th2" v-for="(day, index) in dayInfos" :key="index" class="border border-gray-300 text-center bg-gray-500 text-white">
                                             <div class="hover:bg-indigo-500 border-b flex justify-center items-center">
                                                 <RequestShiftModal 
                                                      :date="day.date" :shifts="dayShiftInfos" :full_date="day.full_date" :Ymd_date="day.Ymd_date" :userId="props.userId" @updateShiftData="handleShiftDataUpdate"/>
                                             </div>
-                                            <div class=" text-center">{{ day.day_of_week }}</div>
+                                            <div id="date" class=" text-center">{{ day.day_of_week }}</div>
                                         </th>
-                                        <th class="border text-xs border-gray-300 bg-gray-500 text-white">
+                                        <th id="th3" class="border text-xs border-gray-300 bg-gray-500 text-white">
                                             <div class="flex justify-around items-center">時間</div>
                                             <div class="border-t border-gray-300 my-1"></div>
                                             <div class="vertical-text flex justify-around">日数</div>
@@ -307,22 +315,22 @@ console.log(props.errors.isDayOff);
                                 </thead>
                                 <tbody>
                                     <tr v-for="(name, index) in props.names" :key="index" class="hover:bg-blue-200">
-                                        <td class="border border-gray-300 text-sm px-2 py-2 bg-gray-500 text-white">{{ name.employee_name }}</td>
-                                        <td v-for="(day, dayIndex) in dayInfos" :key="dayIndex" class="border border-gray-30 py-2">
+                                        <td id="td1" class="border border-gray-300 text-sm px-2 py-2 bg-gray-500 text-white">{{ name.employee_name }}</td>
+                                        <td id="td2" v-for="(day, dayIndex) in dayInfos" :key="dayIndex" class="border border-gray-30 py-2">
                                             <div v-for="(shift, shiftIndex) in dayShiftInfos" :key="shiftIndex">
                                                 <div v-if="workDay(shift.employee_name, name.employee_name, day.date, shift.date)" class="text-center text-xs">
                                                     <div v-if="!(shift.clock_in === 900 && shift.clock_out === 900)">
         
                                                     <!-- <div>{{ shift.clock_in === 0 ? '0000' : shift.clock_in  }}</div> -->
                                                     <div>{{ shift.clock_in.toString().padStart(4, '0') }}</div>
-                                                    <div class="border-t">{{ shift.clock_out.toString().padStart(4, '0') }}</div>
+                                                    <div id="clockOut"class="border-t">{{ shift.clock_out.toString().padStart(4, '0') }}</div>
                                                     </div>    
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="border border-gray-300 text-center px-2 py-2">
+                                        <td id="td3" class="border border-gray-300 text-center px-2 py-2">
                                             <div class="text-xs">{{ totalTime(name.employee_id)}}</div>
-                                            <div class="border-t text-xs">{{ countTotalWorkingDay(name.employee_id) }}</div>
+                                            <div id="employee_name" class="border-t text-xs">{{ countTotalWorkingDay(name.employee_id) }}</div>
                                         </td>
                                     </tr>
                                 </tbody>

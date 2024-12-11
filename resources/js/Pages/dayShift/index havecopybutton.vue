@@ -101,7 +101,36 @@ defineExpose({
   getFormattedDate
 });
 </script>
+<style>
+@media print{
+    nav {
+        display: none;
+        background-color: hsla(208, 75%, 57%, 0.627);
+    }
 
+    #printBtn, #explanation, h2 {
+        display: none;
+    }
+
+    #date {
+      border: none;
+      font-weight: bold;
+    }
+
+    #th1, #th2, #th3, #td1, #td2, #td3{
+      color: black;
+      border-color: rgba(72, 80, 87, 0.506);
+      background-color: white !important;
+    }
+
+    #wer{
+      color: black;
+    }
+    td {
+    background-color: white !important;
+  }
+}
+</style>
 <template>
     <Head title="DayShift" />
 
@@ -121,7 +150,14 @@ defineExpose({
                               <label for="date" class="mr-2">日付 : </label>
                               <input type="date" id="date" name="date" v-model="form.date" :min="todayDate" :max="maxDate">
                             </div>
-
+                            
+                            
+                            <div class="flex justify-end">
+                              <button type="button" id="printBtn" @click="printPage" class="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded flex">
+                                印刷
+                              </button>
+                            </div>
+                            
                         </div>
                         <div class="overflow-x-auto">
                           <table  class="table-auto w-full text-left whitespace-no-wrap">

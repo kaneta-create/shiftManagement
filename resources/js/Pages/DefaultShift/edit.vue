@@ -146,7 +146,7 @@ const timeOptions = generateTimeOptions();
                                             <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
                                         </select>
                                         <div v-if="form[dayOfWeek].start_time && form[dayOfWeek].end_time && form[dayOfWeek].start_time >= form[dayOfWeek].end_time"
-                                            class="absolute mb-5 text-red-500 text-sm -bottom-6 left-0 whitespace-nowrap">
+                                            class="absolute mb-5 text-red-600 text-sm -bottom-6 left-0 whitespace-nowrap">
                                             *出勤時間は退勤時間より前に設定してください。
                                         </div>
                                     </td>
@@ -161,7 +161,7 @@ const timeOptions = generateTimeOptions();
                                         <button 
                                         :disabled="!form[dayOfWeek].start_time" 
                                         :class="{
-                                            'text-white bg-red-400 hover:bg-red-500': form[dayOfWeek].start_time,
+                                            'text-white bg-red-600 hover:bg-red-700': form[dayOfWeek].start_time,
                                             'text-gray-500 bg-gray-300 cursor-not-allowed': !form[dayOfWeek].start_time
                                         }"    
                                         type="button" 
@@ -178,7 +178,7 @@ const timeOptions = generateTimeOptions();
                             </div>
                         <!-- 登録ボタン -->
                         <div class="mt-6">
-                            <button dusk="update-defaultShift-button" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+                            <button dusk="update-defaultShift-button" class="flex mx-auto text-white bg-indigo-600 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-700 rounded text-lg">
                                 更新
                             </button>
                         </div>

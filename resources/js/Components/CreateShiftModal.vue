@@ -93,6 +93,12 @@ const shiftDataUpdate = () => {
         alert('出勤か休日のいずれかを選択してください。')
         return;
     }
+
+    if(form.employee_name == ''){
+        alert('従業員を選択してください。');
+        return;
+    }
+
     if(form.isDayOff == 0 && form.clock_in == ''){
       // console.error('出勤時間を入力してください。')
       alert('出勤時間を入力してください')
@@ -102,6 +108,11 @@ const shiftDataUpdate = () => {
       alert("退勤時間を入力してください")
       return;
     };
+    const isDateAlreadyExists = shiftUpdates.some(update => update.date === form.date && update.employee_name == form.employee_name);
+    if (isDateAlreadyExists) {
+        alert('既に入力済みです。');//ここの削除でも一回変数の中身をクリアしたい
+        return;
+    }
     let shiftData = {
         isDayOff: form.isDayOff,
         clock_in: form.clock_in,
@@ -139,7 +150,7 @@ const timeOptions = generateTimeOptions();
         <div class="modal__overlay" tabindex="-1" data-micromodal-close>
         <div class="bg-white w-2/5 p-8 rounded-lg shadow-sm items-center" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
             <header class="">
-            <h2 class="text-2xl font-bold text-center border-b pb-2 text-indigo-500" id="modal-1-title">
+            <h2 class="text-2xl font-bold text-center border-b pb-2 text-indigo-600" id="modal-1-title">
                 シフト変更
             </h2>
             </header>
@@ -205,7 +216,7 @@ const timeOptions = generateTimeOptions();
             <footer class="modal__footer mt-4">
             <div class="flex justify-between">
                 <button @click="toggleStatus" type="button" class="modal__btn" data-micromodal-close aria-label="Close this dialog window">閉じる</button>
-                <button type="button" @click="shiftDataUpdate" class="text-white bg-indigo-500 border-0 text-sm px-4 py-3 focus:outline-none hover:bg-indigo-600 rounded">保存</button>
+                <button type="button" @click="shiftDataUpdate" class="text-white bg-indigo-600 border-0 text-sm px-4 py-3 focus:outline-none hover:bg-indigo-700 rounded">保存</button>
             </div>
             </footer>
         </div>

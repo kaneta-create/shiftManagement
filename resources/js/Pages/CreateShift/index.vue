@@ -179,25 +179,25 @@ const updateActualShift = (id) => {
 
 const clearChangedShift = () => {
     receivedShiftUpdates.value = '';
+    location.reload();
 }
 
 function removeShift(index) {
   receivedShiftUpdates.value.splice(index, 1);
+  receivedShiftUpdates.value[index] = [''];
 }
+
 </script>
 
 <style>
 @media print{
-    nav {
+    nav, #printBtn, h2, #explanation, #changeShift {
         display: none;
     }
 
-    #printBtn {
-        display: none;
-    }
-
-    h2{
-        display: none;
+    #th1, #th2, #th3, #td1, #td2, #td3{
+        color: black;
+        border-color: rgb(160, 160, 160);
     }
 
 }
@@ -220,10 +220,10 @@ function removeShift(index) {
                             <form @submit.prevent="updateActualShift(props.userId)">
 
                             <h1 class="sm:text-4xl text-3xl font-mono title-font mb-4 text-gray-900">シフト表</h1>
-                            <p class="lg:w-2/3 mx-auto text-center leading-relaxed text-sm text-gray-600">変更したい日付を選択して入力してください</p>
+                            <p id="explanation" class="lg:w-2/3 mx-auto text-center leading-relaxed text-sm text-gray-600">変更したい日付を選択して入力してください</p>
 
                             
-                            <div class="mb-4">
+                            <div id="changeShift" class="mb-4">
                                 <div v-if="receivedShiftUpdates && receivedShiftUpdates.length > 0" class="mb-4">
                                     <h3 class="text-xl mt-8 mb-4">変更内容</h3>
                                     <table class="table-auto w-full text-left whitespace-no-wrap">
@@ -243,7 +243,7 @@ function removeShift(index) {
                                             <td class="px-4 py-3 border-b-2 border-gray-200">{{ shift.clock_in ? shift.clock_in : '休日' }}</td>
                                             <td class="px-4 py-3 border-b-2 border-gray-200">{{ shift.clock_out ? shift.clock_out : '休日' }}</td>
                                             <td class=" border-b-2 border-gray-200 w-10 text-center">
-                                                <button type="button"@click="removeShift(index)" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
+                                                <button type="button" @click="removeShift(index)" class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                                     </svg>
@@ -262,8 +262,8 @@ function removeShift(index) {
                                     </div>
                                     
                                 </div>
-                                <div class="flex justify-end">
-                                    <button type="button" id="printBtn" @click="printPage" class="bg-indigo-500 hover:bg-indigo-600 flex text-white py-2 px-4 rounded">
+                                <div v-if="receivedShiftUpdates.length == 0" class="flex justify-end mt-4">
+                                    <button type="button" id="printBtn" @click="printPage" class="bg-indigo-600 hover:bg-indigo-700 flex text-white py-2 px-4 rounded">
                                         印刷
                                     </button>
                                 </div>
@@ -274,7 +274,7 @@ function removeShift(index) {
                             <table class="min-w-full bg-white border border-gray-300">
                                 <thead>
                                     <tr>
-                                        <th class="border border-gray-300 test-white bg-gray-100 ">
+                                        <th id="th1" class="border border-gray-300 test-white bg-gray-100 ">
                                             <div>
                                                 <select v-model="selectMonth.selectedMonth" class="border-none text-center py-1 bg-gray-50">
                                                     <option :value="props.month[0][1].firstMonth">{{ props.month[0][1].firstMonth }}</option>
@@ -286,15 +286,15 @@ function removeShift(index) {
                                             <!--<div class="bg-gray-500 text-white">名前</div> -->
                                         </th>
                                         <!-- 他のヘッダ要素 -->
-                                        <th v-for="(day, index) in dayInfos" :key="index" class="bg-gray-500 border text-white border-gray-300 text-center">
+                                        <th id="th2" v-for="(day, index) in dayInfos" :key="index" class="bg-gray-500 border text-white border-gray-300 text-center">
                                             <div class="flex justify-center border-b hover:bg-indigo-500">
                                                 <CreateShiftModal
                                                          :date="day.date" :shifts="dayShiftInfos" :full_date="day.full_date" :Ymd_date="day.Ymd_date" :userId="props.userId" :employeeInfo="props.names"  @updateShiftData="handleShiftDataUpdate"/>
                                             </div>
                                             <!-- <div class=" mt-1"></div> -->
-                                            <div>{{ day.day_of_week }}</div>
+                                            <div id="date">{{ day.day_of_week }}</div>
                                         </th>
-                                        <th class="border text-xs text-white border-gray-300 bg-gray-500">
+                                        <th id="th3" class="border text-xs text-white border-gray-300 bg-gray-500">
                                             <div class="">時間</div>
                                             <div class="border-t border-gray-300 my-1"></div>
                                             <div class="vertical-text">日数</div>
@@ -303,11 +303,10 @@ function removeShift(index) {
                                 </thead>
                                 <tbody>
                                     <tr v-for="(name, index) in props.names" :key="index" class="hover:bg-blue-200">
-                                        <td class="border border-gray-300 text-sm px-2 py-2 bg-gray-500 text-white">
+                                        <td id="td1" class="border border-gray-300 text-sm px-2 py-2 bg-gray-500 text-white">
                                             {{ name.employee_name }}
                                         </td>
-                                        <td
-                                            v-for="(day, dayIndex) in dayInfos"
+                                        <td id="td2" v-for="(day, dayIndex) in dayInfos"
                                             :key="dayIndex"
                                             class="border border-gray-300 py-2 bg-gray-50"
                                         >
@@ -323,7 +322,7 @@ function removeShift(index) {
                                             </div>
                                             </div>
                                         </td>
-                                        <td class="border border-gray-300 text-center px-2 py-2 bg-gray-50">
+                                        <td id="td3" class="border border-gray-300 text-center px-2 py-2 bg-gray-50">
                                             <div class="text-xs">{{ totalTime(name.employee_id) }}</div>
                                             <div class="border-t text-xs">{{ countTotalWorkingDay(name.employee_id) }}</div>
                                         </td>
