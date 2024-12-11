@@ -13,7 +13,8 @@ const props = defineProps({
     Ymd_date: String,
     userId : Number,
     shifts: Array,
-    errors: Object
+    errors: Object,
+    day_of_week: String
 });
 
 const filteredshifts = props.shifts.filter(shift => shift.full_date == props.Ymd_date && shift.employee_id == props.userId && shift.clock_in != shift.clock_out);
@@ -131,6 +132,10 @@ const generateTimeOptions = () => {
     return times;
 };
 
+const errorMessage = () => {
+  alert('変更できるのは今日以降のみです。')
+}
+
 const timeOptions = generateTimeOptions();
 
 </script>
@@ -149,7 +154,7 @@ const timeOptions = generateTimeOptions();
              <!-- 日付 -->
              <div class="mb-4">
              <!-- <label class="text-gray-700 text-nowrap w-1/3 text-left ml-14">日付:</label> -->
-                 <p class="text-center text-lg">{{ props.full_date }} ({{ props.shifts[0].day_of_week }}曜日)</p>
+                 <p class="text-center text-lg">{{ props.full_date }} ({{ props.day_of_week }}曜日)</p>
              </div>
 
              <!-- 出勤 or 休日 -->
@@ -205,7 +210,7 @@ const timeOptions = generateTimeOptions();
  <!-- <td 
  @click="new Date(props.Ymd_date) >= new Date().setHours(0,0,0,0) ? toggleStatus() : null"  class="text-center">{{ props.date }}</td> -->
  <td>
-     <button @click="new Date(props.Ymd_date) >= new Date().setHours(0,0,0,0) ? toggleStatus()  : null"  class="text-center" type="button">{{ props.date }}</button>
+     <button @click="new Date(props.Ymd_date) >= new Date().setHours(0,0,0,0) ? toggleStatus()  : errorMessage()"  class="text-center" type="button">{{ props.date }}</button>
  </td>
 </template>
   

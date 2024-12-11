@@ -292,9 +292,9 @@ const isHovered = ref(false); // ホバー状態を管理
                                         </th>
                                         <!-- 他のヘッダ要素 -->
                                         <th id="th2" v-for="(day, index) in dayInfos" :key="index" class="bg-gray-500 border text-white border-gray-300 text-center">
-                                            <div class="flex justify-center border-b hover:bg-indigo-500">
+                                            <div :class="{'hover:bg-indigo-500' : day.date > new Date().getDate()}" class="border-b flex justify-center items-center">
                                                 <CreateShiftModal
-                                                         :date="day.date" :shifts="dayShiftInfos" :full_date="day.full_date" :Ymd_date="day.Ymd_date" :userId="props.userId" :employeeInfo="props.names"  @updateShiftData="handleShiftDataUpdate"/>
+                                                         :date="day.date" :shifts="dayShiftInfos" :day_of_week="day.day_of_week" :full_date="day.full_date" :Ymd_date="day.Ymd_date" :userId="props.userId" :employeeInfo="props.names"  @updateShiftData="handleShiftDataUpdate"/>
                                             </div>
                                             <!-- <div class=" mt-1"></div> -->
                                             <div id="date">{{ day.day_of_week }}</div>

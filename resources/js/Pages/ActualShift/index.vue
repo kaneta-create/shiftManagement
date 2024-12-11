@@ -194,6 +194,7 @@ function removeShift(index) {
 }
 
 const isHovered = ref(false); // ホバー状態を管理
+
 </script>
 <style>
 @media print{
@@ -305,10 +306,11 @@ const isHovered = ref(false); // ホバー状態を管理
                                             <div>名前</div> -->
                                         </th>
                                         <!-- 他のヘッダ要素 -->
-                                        <th id="th2" v-for="(day, index) in dayInfos" :key="index" class="border border-gray-300 text-center bg-gray-500 text-white">
-                                            <div class="hover:bg-indigo-500 border-b flex justify-center items-center">
+                                        
+                                        <th id="th2" v-for="(day, index) in dayInfos" :key="index"  class="border border-gray-300 text-center bg-gray-500 text-white">
+                                            <div :class="{'hover:bg-indigo-500' : day.date > new Date().getDate()}" class="border-b flex justify-center items-center">
                                                 <RequestShiftModal 
-                                                     :date="day.date" :shifts="dayShiftInfos" :full_date="day.full_date" :Ymd_date="day.Ymd_date" :userId="props.userId" @updateShiftData="handleShiftDataUpdate"/>
+                                                     :date="day.date" :shifts="dayShiftInfos" :day_of_week="day.day_of_week" :full_date="day.full_date" :Ymd_date="day.Ymd_date" :userId="props.userId" @updateShiftData="handleShiftDataUpdate"/>
                                             </div>
                                             <div id="date" class=" text-center">{{ day.day_of_week }}</div>
                                         </th>
