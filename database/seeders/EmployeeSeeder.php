@@ -28,6 +28,7 @@ class EmployeeSeeder extends Seeder
                 // 'employee_number' => 12345,
                 'role' =>  '社員',
                 'authority' => 3,
+                'organization_id' => 1
                 // 'contract_date' => '2020-08-12',
             ],
             [
@@ -35,6 +36,7 @@ class EmployeeSeeder extends Seeder
                 // 'employee_number' => 12346,
                 'role' =>  '社員',
                 'authority' => 3,
+                'organization_id' => 2
                 // 'contract_date' => '2020-08-12',
             ],
             [
@@ -42,6 +44,7 @@ class EmployeeSeeder extends Seeder
                 // 'employee_number' => 34671,
                 'role' =>  '社員',
                 'authority' => 2,
+                'organization_id' => 3
                 // 'contract_date' => '2020-08-12',
             ],
             [
@@ -49,6 +52,7 @@ class EmployeeSeeder extends Seeder
                 // 'employee_number' => 67316,
                 'role' =>  'パート',
                 'authority' => 2,
+                'organization_id' => 4
                 // 'contract_date' => '2020-08-12',
             ],
             [
@@ -56,6 +60,7 @@ class EmployeeSeeder extends Seeder
                 // 'employee_number' => 59761,
                 'role' =>  'パート',
                 'authority' => 2,
+                'organization_id' => 5
                 // 'contract_date' => '2020-08-12',
             ],
             [
@@ -63,6 +68,7 @@ class EmployeeSeeder extends Seeder
                 // 'employee_number' => 12305,
                 'role' =>  'パート',
                 'authority' => 2,
+                'organization_id' => 6
                 // 'contract_date' => '2020-08-12',
             ],
             [
@@ -70,6 +76,7 @@ class EmployeeSeeder extends Seeder
                 // 'employee_number' => 78345,
                 'role' =>  'パート',
                 'authority' => 1,
+                'organization_id' => 1
                 // 'contract_date' => '2020-08-12',
             ],
             [
@@ -77,6 +84,7 @@ class EmployeeSeeder extends Seeder
                 // 'employee_number' => 12341,
                 'role' =>  'パート',
                 'authority' => 1,
+                'organization_id' => 1
                 // 'contract_date' => '2020-08-12',
             ],
             [
@@ -84,6 +92,7 @@ class EmployeeSeeder extends Seeder
                 // 'employee_number' => 12945,
                 'role' =>  'パート',
                 'authority' => 1,
+                'organization_id' => 1
                 // 'contract_date' => '2020-08-12',
             ],
             [
@@ -91,6 +100,7 @@ class EmployeeSeeder extends Seeder
                 // 'employee_number' => 40345,
                 'role' =>  'パート',
                 'authority' => 1,
+                'organization_id' => 1
                 // 'contract_date' => '2020-08-12',
             ],
             [
@@ -98,6 +108,7 @@ class EmployeeSeeder extends Seeder
                 // 'employee_number' => 19995,
                'role' =>  'アルバイト',
                 'authority' => 1,
+                'organization_id' => 1
                 // 'contract_date' => '2020-08-12',
             ],
             [
@@ -105,6 +116,7 @@ class EmployeeSeeder extends Seeder
                 // 'employee_number' => 12311,
                 'role' =>  'アルバイト',
                 'authority' => 1,
+                'organization_id' => 1
                 // 'contract_date' => '2020-08-12',
             ],
             [
@@ -112,6 +124,7 @@ class EmployeeSeeder extends Seeder
                 // 'employee_number' => 80045,
                 'role' =>  'アルバイト',
                 'authority' => 1,
+                'organization_id' => 1
                 // 'contract_date' => '2020-08-12',
             ],
             [
@@ -119,6 +132,7 @@ class EmployeeSeeder extends Seeder
                 // 'employee_number' => 55345,
                'role' =>  'アルバイト',
                 'authority' => 1,
+                'organization_id' => 1
                 // 'contract_date' => '2020-08-12',
             ],
             [
@@ -126,6 +140,7 @@ class EmployeeSeeder extends Seeder
                 // 'employee_number' => 12245,
                 'role' =>  'アルバイト',
                 'authority' => 1,
+                'organization_id' => 1
                 // 'contract_date' => '2020-08-12',
             ],
             [
@@ -133,6 +148,7 @@ class EmployeeSeeder extends Seeder
                 // 'employee_number' => 11945,
                 'role' =>  'アルバイト',
                 'authority' => 1,
+                'organization_id' => 1
                 // 'contract_date' => '2020-08-12',
             ],
             [
@@ -140,6 +156,7 @@ class EmployeeSeeder extends Seeder
                 // 'employee_number' => 18845,
                 'role' =>  'アルバイト',
                 'authority' => 1,
+                'organization_id' => 1
                 // 'contract_date' => '2020-08-12',
             ],
         ]);

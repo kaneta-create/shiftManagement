@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('organization_id')->constrained()->onUpdate('cascade')->onDelete('cascade'); 
             // $table->bigInteger('employee_number')->unique()->nullable();
             $table->string('role');
             $table->integer('authority')->comment('権限');
