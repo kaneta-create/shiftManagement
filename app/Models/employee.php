@@ -13,6 +13,7 @@ class employee extends Model
         'id',
         'name', 
         'user_id',
+        'organization_id',
         'role',
         'authority'
     ];

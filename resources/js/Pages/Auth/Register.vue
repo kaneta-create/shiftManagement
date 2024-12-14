@@ -7,10 +7,13 @@ import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 const form = useForm({
+    organization_name: '',
     name: '',
     employee_number: '',
     password: '',
     password_confirmation: '',
+    authority: 3,
+    role:'社員',
     terms: false,
 });
 
@@ -26,10 +29,25 @@ const submit = () => {
 <template>
     <GuestLayout>
         <Head title="Register" />
-
+        <p class="mb-4 mt-2 text-sm text-gray-500">以下のフォームを入力してください。</p>
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="organization_name" value="組織名" />
+
+                <TextInput
+                    id="organization_name"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.organization_name"
+                    required
+                    autofocus
+                />
+
+                <InputError class="mt-2" :message="form.errors.organization_name" />
+            </div>
+
+            <div class="mt-4">
+                <InputLabel for="name" value="名前" />
 
                 <TextInput
                     id="name"
@@ -37,8 +55,6 @@ const submit = () => {
                     class="mt-1 block w-full"
                     v-model="form.name"
                     required
-                    autofocus
-                    autocomplete="name"
                 />
 
                 <InputError class="mt-2" :message="form.errors.name" />
@@ -49,18 +65,17 @@ const submit = () => {
 
                 <TextInput
                     id="employee_number"
-                    type="number"
+                    type="text"
                     class="mt-1 block w-full"
                     v-model="form.employee_number"
                     required
-                    autocomplete="username"
                 />
 
-                <InputError class="mt-2" :message="form.errors.employee_number" />
+                <InputError class="mt-2" :message="form.errors.name" />
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" value="パスワード" />
 
                 <TextInput
                     id="password"
@@ -75,7 +90,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
+                <InputLabel for="password_confirmation" value="確認用パスワード" />
 
                 <TextInput
                     id="password_confirmation"
@@ -94,11 +109,11 @@ const submit = () => {
                     :href="route('login')"
                     class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    Already registered?
+                    登録済みの組織の場合
                 </Link>
 
                 <PrimaryButton class="ml-4 bg-indigo-500" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
+                    登録
                 </PrimaryButton>
             </div>
         </form>

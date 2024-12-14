@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Organization;
+use App\Models\employee;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -31,17 +33,33 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        
         $request->validate([
+            'organization_name' => 'required|unique:organizations,name',
             'name' => 'required|string|max:255',
             'employee_number' => 'required|min:1|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        
         $user = User::create([
             'name' => $request->name,
             'employee_number' => $request->employee_number,
             'password' => Hash::make($request->password),
         ]);
+
+        $organization = Organization::create([
+            'name' => $request->organization_name,
+        ]);
+        
+        employee::create([
+            'user_id' => $user->id,
+            'organization_id' => 1,
+            // 'organization_id' => $organization->id,
+            'authority' => $request->authority,
+            'role' => $request->role
+        ]);
+        
 
         event(new Registered($user));
 

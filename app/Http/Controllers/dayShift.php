@@ -16,6 +16,7 @@ class DayShift extends Controller
     public function index()
     {
         $userId = Auth::id();
+        
         $userRole = employee::select('authority')->where('user_id', $userId)->first();
 
         for($i = 1; $i <= 3; $i++){
@@ -29,10 +30,15 @@ class DayShift extends Controller
                 $lastDayOfMonth =  Carbon::now()->copy()->addMonth($i - 1)->endOfMonth()->format('Y-m-d'); // 来月以降の末日
             } 
             // dd($firstDayOfMonth);
+            $organization_id = employee::where('user_id', $userId)->value('organization_id');
+            $employeeIds = Employee::where('organization_id', $organization_id)->pluck('id');
             $periodShifts[] = ActualShift::select('employee_id','clock_in','clock_out','day_of_week','date')
-                       ->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
-                       ->get();
+                        ->whereIn('employee_id', $employeeIds)      
+                        ->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
+                        ->get();
+            //ログインしているユーザと同じorganization_idを持つemployee_idのシフトを取得に変更したい
             
+            // dd($organization_id);
             if($i == 1){
                 $startOfMonth = Carbon::now()->startOfMonth();
                 $endOfMonth = Carbon::now()->endOfMonth();

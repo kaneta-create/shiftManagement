@@ -184,7 +184,8 @@ return [
         '土曜日.end_time' => '土曜日の退勤時間',
         '日曜日.start_time' => '日曜日の出勤時間',
         '日曜日.end_time' => '日曜日の退勤時間',
-
+        'organization_name' => '組織名',
+        'password' => 'パスワード'
     ],
 
 ];
