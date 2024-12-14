@@ -71,9 +71,13 @@ class CreateShift extends Controller
                 ];
                 
             }
-            
-            // dd($totalWorkingHours);
-            $shifts[] = ActualShift::select('employee_id', 'clock_in', 'clock_out', 'day_of_week', 'date')->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])->get();
+            $organization_id = employee::where('user_id', $userId)->value('organization_id');
+            $employeeIds = Employee::where('organization_id', $organization_id)->pluck('id');
+    
+            $shifts[] = ActualShift::select('employee_id', 'clock_in', 'clock_out', 'day_of_week', 'date')
+            ->whereIn('employee_id', $employeeIds)
+            ->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
+            ->get();
             $userName = User::select('name')->get();
             $shiftInformations = []; // 配列の初期化
             $names = []; // 配列の初期化

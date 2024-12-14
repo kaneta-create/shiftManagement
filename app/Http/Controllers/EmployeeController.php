@@ -22,7 +22,11 @@ class EmployeeController extends Controller
      */
     public function index()
     {
+        $userId = Auth::id();
+        $organization_id = employee::where('user_id', $userId)->value('organization_id');
+        $employeeIds = Employee::where('organization_id', $organization_id)->pluck('id');
         $employees = employee::select('id', 'user_id', 'role', 'authority')
+                    ->where('organization_id', $organization_id)
                     ->paginate(10);
         // dd($employees);
         $userId = Auth::id();
