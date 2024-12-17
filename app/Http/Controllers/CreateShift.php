@@ -50,26 +50,26 @@ class CreateShift extends Controller
                 
                 $totalWorkingHours = 0;
                 $attendance_count = $workingHours->count();
+                // dd($workingHours);
                 foreach ($workingHours as $workingHour) {
-                    // clock_in と clock_out を Carbon インスタンスに変換
-                    $clockIn = Carbon::createFromFormat('H:i:s', $workingHour->clock_in);
-                    $clockOut = Carbon::createFromFormat('H:i:s', $workingHour->clock_out);
-                    if ($workingHour->clock_out === '00:00:00') {
-                        $clockOut->addDay();  // 翌日の時間として計算
-                    }
-                    // 出勤時間を分単位で計算し、合計出勤時間に追加
-                    $totalMinutes = $clockOut->diffInMinutes($clockIn);
-                    $totalWorkingHours += $totalMinutes;
-                }
+                        // clock_in と clock_out を Carbon インスタンスに変換
+                        $clockIn = Carbon::createFromFormat('H:i:s', $workingHour->clock_in);
+                        $clockOut = Carbon::createFromFormat('H:i:s', $workingHour->clock_out);
+                        if ($workingHour->clock_out === '00:00:00') {
+                            $clockOut->addDay();  // 翌日の時間として計算
+                        }
+                        // 出勤時間を分単位で計算し、合計出勤時間に追加
+                        $totalMinutes = $clockOut->diffInMinutes($clockIn);
+                        $totalWorkingHours += $totalMinutes;
+                    
 
-                // 合計時間を時間単位に変換
-                $totalWorkingHoursInHours[$i][$employeeId] = [
-                    // 'total_working_hours' => $totalWorkingHours / 60,
-                    'total_working_hours' => number_format($totalWorkingHours / 60, 2),
-                    'employee_id' => $workingHour->employee_id,
-                    'attendance_count' => $attendance_count
-                ];
-                
+                    // 合計時間を時間単位に変換
+                    $totalWorkingHoursInHours[$i][$employeeId] = [
+                        'total_working_hours' => number_format($totalWorkingHours / 60, 2),
+                        'employee_id' => $workingHour->employee_id,
+                        'attendance_count' => $attendance_count
+                    ];
+                }
             }
             $organization_id = employee::where('user_id', $userId)->value('organization_id');
             $employeeIds = Employee::where('organization_id', $organization_id)->pluck('id');

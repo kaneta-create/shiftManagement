@@ -91,6 +91,8 @@ class EmployeeController extends Controller
         //     'employee_number' => ['required','integer'],
         //     'role' => ['string', 'required'],
         // ]);
+        
+            
         DB::transaction(function () use ($request) {
             $user = User::create([
                 'name' => $request->name,
@@ -98,9 +100,12 @@ class EmployeeController extends Controller
                 // 'password' => Hash::make($request->employee_number),
                 'temporary_password' => $request->temporary_password
             ]);
-            // dd($user);
+            
+            $userId = Auth::id();
+            $organization_id = employee::where('user_id', $userId)->pluck('organization_id');
             employee::create([
                 'user_id' => $user->id,
+                'organization_id' => $organization_id[0],
                 'role' => $request->role,
                 'authority' => $request->authority,
             ]);

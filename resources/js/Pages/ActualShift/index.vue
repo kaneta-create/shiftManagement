@@ -177,10 +177,11 @@ const updateActualShift = (id) => {
             },
             onFinish: () => {
                 clearChangedShift();  // 変更内容をクリア
-                location.reload();  // ページを再読み込み
+                  // ページを再読み込み
             }
         }
     )
+    location.reload();
 };
 
 const clearChangedShift = () => {

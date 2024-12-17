@@ -296,12 +296,12 @@ class ActualShiftController extends Controller
                 ['clock_in' => $clockIn, 'clock_out' => $clockOut, 'day_of_week' => $dayOfWeek]
             );
         }
-        return back();
-        // return to_route('actualShifts.index');
-        // ->with([
-        //     'message' => 'シフト情報を更新しました。',
-        //     'status' => 'success'
-        // ]);
+        // return back();
+        return to_route('actualShifts.index')
+        ->with([
+            'message' => 'シフト情報を更新しました。',
+            'status' => 'success'
+        ]);
     }
 
     /**

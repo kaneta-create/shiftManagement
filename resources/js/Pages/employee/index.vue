@@ -9,14 +9,17 @@ import Pagination from '@/Components/Pagination.vue'
 const props = defineProps({
     employees: Object,
     paginate:Object,
-    userRole: Object
+    userRole: Object,
+    alertMessage: String
 });
-console.log(props.userRole.authority)
+
 const deleteEmployee = id => {
   Inertia.delete(route('admins.destroy', { admin: id }), {
-    onBefore: () => confirm('本当に削除しますか?')
+    onBefore: () => confirm('本当に削除しますか?'),
   })
+  location.reload()
 }
+
 const updateAuthority = () => {
     Inertia.put(route('admins.update', {admin:props.id}), form);
 }
@@ -45,12 +48,12 @@ const updateAuthority = () => {
                             <h1 class="sm:text-4xl text-center text-3xl font-mono title-font mb-4 text-gray-900">従業員一覧</h1>
 
                             <div class="flex justify-end my-4 lg:w-3/4 w-full mx-auto space-x-2">
-                                <Link as="button" :href="route('admins.create')" class="text-white bg-indigo-600 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
+                                <Link as="button" :href="route('admins.create')" class="text-white bg-indigo-600 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-700 rounded">
                                         <div class="flex items-center ">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                             </svg> 
-                                            <span class="ml-1 items-center mt-1">新規登録</span>
+                                            <span class="ml-1 items-center mt-1 hover:bg-indigo-700">新規登録</span>
                                         </div>
                                 </Link>
                             </div>

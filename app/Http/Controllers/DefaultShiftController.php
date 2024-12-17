@@ -173,9 +173,10 @@ class DefaultShiftController extends Controller
     {
         // dd($request);
         //リクエストで送られてきた社員番号からemployee_idを取得し、このテーブルのカラムに保存したい
-        $userId = User::select('id')->where('employee_number', $request->employee_number)->first()->id;
-
-        if(DB::table('default_shifts')->where('employee_id', $userId)->exists()) {
+        $userId = User::select('id')->where('employee_number', $request->employee_number)->first();
+        // dd($request, $userId->employee->id);
+        // dd($userId->id);
+        if(DB::table('default_shifts')->where('employee_id', $userId->id)->exists()) {
             return to_route('admins.index')
             ->with([
                 'message' => '登録済みです。変更がある場合は変更画面から変更してください。',
@@ -186,7 +187,7 @@ class DefaultShiftController extends Controller
             foreach($daysOfWeek as $day){
                 if (!is_null($request[$day]['start_time']) && !is_null($request[$day]['end_time'])){
                     DefaultShift::create([
-                        'employee_id' => $userId,
+                        'employee_id' => $userId->employee->id,
                         'day_of_week' => $request[$day]['dayOfNameNumber'],
                         'clock_in' => $request[$day]['start_time'],
                         'clock_out' => $request[$day]['end_time'],
@@ -195,7 +196,7 @@ class DefaultShiftController extends Controller
             }
             return to_route('admins.index')
             ->with([
-                'message' => '登録しました',
+                'message' => '登録しました。',
                 'status' => 'success'
             ]);
         }
@@ -226,7 +227,13 @@ class DefaultShiftController extends Controller
         $userRole = employee::select('authority')->where('user_id', $userId)->first();
 
         $defaultShifts = DefaultShift::select('id', 'employee_id', 'clock_in', 'clock_out', 'day_of_week')->where('employee_id', $defaultShift->id)->get();
-        // dd($defaultShifts);
+        // dd($defaultShifts[0]->employee->user->employee_number);
+        if ($defaultShifts->isEmpty()) {
+            return redirect()->route('admins.index')->with([
+                'message' => '未登録です。勤務時間登録から登録してください。',
+                'status' => 'danger'
+            ]);
+        }
         $day_of_week = [
             1 => '月曜日',
             2 => '火曜日',
@@ -237,10 +244,10 @@ class DefaultShiftController extends Controller
             7 => '日曜日'
         ];
         $employeeNumber = User::select('employee_number')->where('id', $defaultShift->id)->first();
-        
+        // dd($employeeNumber, $defaultShift);
         return Inertia::render('DefaultShift/edit',[
             'defaultShifts' => $defaultShifts,
-            'employeeNumber' => $employeeNumber->employee_number,
+            'employeeNumber' => $defaultShifts[0]->employee->user->employee_number,
             'employee_id' => $defaultShift->employee_id,
             'userRole' => $userRole
         ]);
@@ -253,38 +260,7 @@ class DefaultShiftController extends Controller
      * @param  \App\Models\DefaultShift  $defaultShift
      * @return \Illuminate\Http\Response
      */
-    // public function update(UpdateDefaultShiftRequest $request, DefaultShift $defaultShift)
-    // {
-    //     $data = $request->all();
-    //     // dd($data);
-    //     $dayOfWeekNames = ['月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日'];
-    //     $userId = User::where('employee_number' , $data['employeeNumber'])->value('id');
-        
-    //     foreach ($dayOfWeekNames as $dayOfWeek) {
-    //         if (isset($data[$dayOfWeek])) {
-    //             $updateShift = $data[$dayOfWeek];
-                
-    //             if($updateShift['start_time'] !== null && $updateShift['end_time'] !== null){
-    //                 $updateData = DefaultShift::updateOrCreate(
-    //                     ['employee_id' => $userId, 'day_of_week' => $updateShift['dayOfNameNumber']],
-    //                     [
-    //                         'clock_in' => $updateShift['start_time'], 
-    //                         'clock_out' => $updateShift['end_time'], 
-    //                         'day_of_week' => $updateShift['dayOfNameNumber'], 
-    //                         'employee_id' => $userId, 
-    //                     ]
-    //                 );
-                    
-    //             }
-    //         }
-    //     }
-    //     return to_route('admins.index')
-    //     ->with([
-    //         'message' => 'シフト情報を更新しました。',
-    //         'status' => 'success'
-    //     ]);
-
-    // }
+    
     public function update(UpdateDefaultShiftRequest $request, DefaultShift $defaultShift)
     {
         // dd($request);

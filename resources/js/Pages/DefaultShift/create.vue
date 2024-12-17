@@ -131,16 +131,10 @@ const timeOptions = generateTimeOptions();
                                         :value="time"
                                     >{{ time }}</option>
                                     </select>
-                                    <div
-                                    v-if="
-                                        form[dayOfWeek].start_time &&
-                                        form[dayOfWeek].end_time &&
-                                        form[dayOfWeek].start_time >= form[dayOfWeek].end_time
-                                    "
-                                    class="absolute bg-yellow-400 text-white text-xs rounded p-1 mt-1 -top-8 left-0 text-nowrap"
-                                    >
-                                    出勤時間は退勤時間より前に設定してください。
-                                    </div>
+                                    <div v-if="form[dayOfWeek].start_time && form[dayOfWeek].end_time && form[dayOfWeek].start_time >= form[dayOfWeek].end_time"
+                                            class="absolute mb-5 text-red-600 text-sm -bottom-6 left-0 whitespace-nowrap">
+                                            *出勤時間は退勤時間より前に設定してください。
+                                        </div>
                                 </td>
                                 <td class="border-y-2 border-gray-200 px-6 py-3">
                                     <select

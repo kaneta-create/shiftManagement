@@ -12,7 +12,6 @@ const props = defineProps({
     totalHour: Array,
     userRole: Object
 });
-// console.log(props.userRole.authority)
 // 今日の日付を 'Y-m-d' フォーマットで取得
 const today = ref(getFormattedDate(new Date()));
 console.log(props.shiftInfos)
@@ -100,6 +99,7 @@ const printPage = () => {
 defineExpose({
   getFormattedDate
 });
+console.log(matchedShifts)
 </script>
 
 <template>
@@ -123,7 +123,10 @@ defineExpose({
                             </div>
 
                         </div>
-                        <div class="overflow-x-auto">
+                        <div v-if="matchedShifts.length == 0">
+                            <p>本日出勤の従業員がいません。</p>
+                        </div>
+                        <div v-else class="overflow-x-auto">
                           <table  class="table-auto w-full text-left whitespace-no-wrap">
                             <thead>
                             <tr>
