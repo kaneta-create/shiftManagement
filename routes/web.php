@@ -37,9 +37,9 @@ Route::get('/', function () {
 Route::get('/passwordSets', [passwordSet::class, 'index'])->name('passwordSets.index');
 Route::put('/passwordSets', [passwordSet::class, 'storePassword'])->name('passwordSets.storePassword');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return Inertia::render('Dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::resource('admins', EmployeeController::class)->middleware(['auth', 'checkRole:3']);
 // Route::resource('employees', EmployeeController::class)->middleware(['auth', 'checkRole:3']);
