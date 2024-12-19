@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\employee;
+use App\Models\Organization;
 
 class DayShiftTest extends TestCase
 {
@@ -15,6 +16,8 @@ class DayShiftTest extends TestCase
      *
      * @return void
      */
+    use RefreshDatabase;
+
     public function test_example()
     {
         $response = $this->get('/');
@@ -37,6 +40,17 @@ class DayShiftTest extends TestCase
             ['authority' => 3, 'role' => '管理者'],
         ];
     
+        Organization::create([
+            'name' => 'ドンキ'
+        ]);
+        Organization::create([
+            'name' => 'ドンキ1'
+        ]);
+        Organization::create([
+            'name' => 'ドンキ2'
+        ]);
+        $organizations = Organization::select()->get();
+        // dd(Organization::select()->get());
         foreach ($roles as $index => $roleData) {
             // Userテーブルにユーザーを作成
             $user = User::create([
@@ -50,6 +64,7 @@ class DayShiftTest extends TestCase
             $employee = Employee::create([
                 'user_id' => $user->id,
                 'role' => $roleData['role'],       // roleを設定
+                'organization_id' => $organizations[$index]->id,
                 'authority' => $roleData['authority'],  // authorityを設定
             ]);
     

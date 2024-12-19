@@ -8,6 +8,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\employee;
 use App\Models\ActualShift;
+use App\Models\Organization;
 
 class ActualShiftTest extends TestCase
 {
@@ -39,7 +40,10 @@ class ActualShiftTest extends TestCase
             ['authority' => 2, 'role' => 'マネージャー'],
             ['authority' => 3, 'role' => '管理者'],
         ];
-    
+        $organization = Organization::create([
+            'name' => 'ドンキ',
+        ]);
+       
         foreach ($roles as $index => $roleData) {
             // Userテーブルにユーザーを作成
             $user = User::create([
@@ -52,6 +56,7 @@ class ActualShiftTest extends TestCase
             // Employeeテーブルに関連するEmployeeレコードを作成
             $employee = Employee::create([
                 'user_id' => $user->id,
+                'organization_id' => $organization->id,
                 'role' => $roleData['role'],       // roleを設定
                 'authority' => $roleData['authority'],  // authorityを設定
             ]);
@@ -80,7 +85,9 @@ class ActualShiftTest extends TestCase
             ['authority' => 2, 'role' => 'マネージャー'],
             ['authority' => 3, 'role' => '管理者'],
         ];
-
+        $organization = Organization::create([
+            'name' => 'ドンキ',
+        ]);
         // 各ロールに対してテストを実行
         foreach ($roles as $index => $roleData) {
             // Userテーブルにユーザーを作成
@@ -94,6 +101,7 @@ class ActualShiftTest extends TestCase
             // Employeeテーブルに関連するEmployeeレコードを作成
             $employee = Employee::create([
                 'user_id' => $user->id,
+                'organization_id' => $organization->id,
                 'role' => $roleData['role'],       // roleを設定
                 'authority' => $roleData['authority'],  // authorityを設定
             ]);
@@ -162,7 +170,9 @@ class ActualShiftTest extends TestCase
             ['authority' => 2, 'role' => 'マネージャー'],
             ['authority' => 3, 'role' => '管理者'],
         ];
-
+        $organization = Organization::create([
+            'name' => 'ドンキ',
+        ]);
         // 各ロールに対してテストを実行
         foreach ($roles as $index => $roleData) {
             // Userテーブルにユーザーを作成
@@ -176,6 +186,7 @@ class ActualShiftTest extends TestCase
             // Employeeテーブルに関連するEmployeeレコードを作成
             $employee = Employee::create([
                 'user_id' => $user->id,
+                'organization_id' => $organization->id,
                 'role' => $roleData['role'],       // roleを設定
                 'authority' => $roleData['authority'],  // authorityを設定
             ]);

@@ -8,6 +8,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\employee;
 use App\Models\DefaultShift;
+use App\Models\Organization;
 
 use function GuzzleHttp\default_ca_bundle;
 
@@ -37,13 +38,21 @@ class DefaulShiftTest extends TestCase
     {
         // ユーザーを2人作成
         $users = User::factory()->count(2)->create();
-    
+        Organization::create([
+                'name' => 'ドンキ'
+        ]);
+        Organization::create([
+                'name' => 'ドンキ1'
+        ]);
+        $organizations = Organization::select()->get();
+        
         // 各ユーザーに対応するEmployeeレコードを作成
         $employees = [];
         foreach ($users as $index => $user) {
             $employees[] = Employee::create([
                 'user_id' => $user->id,           // 動的にユーザーIDを設定
                 'role' => '社員',
+                'organization_id' => $organizations[$index]->id,
                 'authority' => $index === 0 ? 3 : 2  // 1人目はauthority 3、2人目はauthority 2
             ]);
         }
@@ -66,11 +75,20 @@ class DefaulShiftTest extends TestCase
     {
         // ユーザーを2人作成
         $users = User::factory()->count(2)->create();
+        Organization::create([
+            'name' => 'ドンキ'
+        ]);
+        Organization::create([
+            'name' => 'ドンキ1'
+        ]);
+        $organizations = Organization::select()->get();
+        
         $employees = [];
         foreach ($users as $index => $user) {
             $employees[] = Employee::create([
                 'user_id' => $user->id,           // 動的にユーザーIDを設定
                 'role' => '社員',
+                'organization_id' => $organizations[$index]->id,
                 'authority' => $index === 0 ? 3 : 2  // 1人目はauthority 3、2人目はauthority 2
             ]);
         }
@@ -85,10 +103,19 @@ class DefaulShiftTest extends TestCase
     public function test_defaultShift_store_ok()
     {
         $users = User::factory()->count(2)->create();
+        Organization::create([
+            'name' => 'ドンキ'
+        ]);
+        Organization::create([
+                'name' => 'ドンキ1'
+        ]);
+        $organizations = Organization::select()->get();
+
         $employees = [];
         foreach ($users as $index => $user) {
             $employees[] = Employee::create([
                 'user_id' => $user->id,
+                'organization_id' => $organizations[$index]->id,
                 'role' => '社員',
                 'authority' => $index === 0 ? 3 : 2
             ]);
@@ -137,6 +164,10 @@ class DefaulShiftTest extends TestCase
     {
         // テスト用の従業員とシフトデータを作成
         $user = User::factory()->create();
+        $organization = Organization::create([
+            'name' => 'ドンキ'
+        ]);
+        
         // dd($user);
         // リクエストデータ
         $requestData = [
@@ -146,6 +177,7 @@ class DefaulShiftTest extends TestCase
         ];
         $employee = employee::create([
             'user_id' => $user->id,
+            'organization_id' => $organization->id,
             'role' => '社員',
             'authority' => 3
         ]);
@@ -180,11 +212,19 @@ class DefaulShiftTest extends TestCase
     {
         // *選択された社員番号は正しくありません。
         $users = User::factory()->count(2)->create();
+        Organization::create([
+            'name' => 'ドンキ'
+        ]);
+        Organization::create([
+                'name' => 'ドンキ1'
+        ]);
+        $organizations = Organization::select()->get();
 
         $employees = [];
         foreach ($users as $index => $user) {
             $employees[] = Employee::create([
                 'user_id' => $user->id,
+                'organization_id' => $organizations[$index]->id,
                 'role' => '社員',
                 'authority' => $index === 0 ? 3 : 2
             ]);
@@ -207,11 +247,19 @@ class DefaulShiftTest extends TestCase
     public function test_employee_number_validation_error()
     {
         $users = User::factory(2)->create();
-
+        Organization::create([
+            'name' => 'ドンキ'
+        ]);
+        Organization::create([
+                'name' => 'ドンキ1'
+        ]);
+        $organizations = Organization::select()->get();
+        // dd($kk);
         $employees = [];
         foreach ($users as $index => $user) {
             $employees[] = Employee::create([
                 'user_id' => $user->id,
+                'organization_id' => $organizations[$index]->id,
                 'role' => '社員',
                 'authority' => $index === 0 ? 3 : 2
             ]);

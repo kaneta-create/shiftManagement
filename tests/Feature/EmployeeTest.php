@@ -7,6 +7,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\employee;
+use App\Models\Organization;
+use Illuminate\Http\ResponseTrait;
 
 class EmployeeTest extends TestCase
 {
@@ -15,6 +17,8 @@ class EmployeeTest extends TestCase
      *
      * @return void
      */
+    use RefreshDatabase;
+    
     public function test_example()
     {
         $response = $this->get('/');
@@ -31,8 +35,12 @@ class EmployeeTest extends TestCase
     public function test_employee_index_ok()
     {
         $user = User::factory()->create();
+        $organization = Organization::create([
+            'name' => 'ドンキ'
+        ]);
         $employee = employee::create([
             'user_id' => $user->id,
+            'organization_id' => $organization->id,
             'role' => '社員',
             'authority' => 3
         ]);
@@ -51,8 +59,12 @@ class EmployeeTest extends TestCase
     public function test_employee_create_ok()
     {
         $user = User::factory()->create();
+        $organization = Organization::create([
+            'name' => 'ドンキ'
+        ]);
         $employee = employee::create([
             'user_id' => $user->id,
+            'organization_id' => $organization->id,
             'role' => '社員',
             'authority' => 3
         ]);
@@ -67,9 +79,12 @@ class EmployeeTest extends TestCase
         $user = User::factory()->create();
          // 1. テスト用の従業員を作成
         $this->actingAs($user);
+        $organization = Organization::create([
+            'name' => 'ドンキ'
+        ]);
         $employee = employee::create([
-            // 'id' => 1,
             'user_id' => $user->id,
+            'organization_id' => $organization->id,
             'role' => '社員',
             'authority' => 3
         ]);

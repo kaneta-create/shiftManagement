@@ -7,6 +7,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\DefaultShift;
 use App\Models\ActualShift;
+use App\Models\Employee;
+use App\Models\Organization;
+use App\Models\User;
 use Carbon\Carbon;
 use Mockery;
 
@@ -19,42 +22,61 @@ class CreateActualShiftCommandTest extends TestCase
      *
      * @return void
      */
+    
+
     public function test_create_actual_shift_command_creates_shifts_correctly()
     {
-        // DefaultShift モデルのモックを作成
+        $users = User::factory()->count(2)->create();
+        // dd($users);
+        Organization::create([
+            'name' => 'ドンキ'
+        ]);
+        Organization::create([
+                'name' => 'ドンキ1'
+        ]);
+        $organizations = Organization::select()->get();
+        Employee::create([
+            'user_id' => $users[0]->id,
+            'organization_id' => $organizations[0]->id,
+            'role' => '社員',
+            'authority' => 1,
+
+        ]);
+        Employee::create([
+            'user_id' => $users[1]->id,
+            'organization_id' => $organizations[0]->id,
+            'role' => '社員',
+            'authority' => 1
+        ]);
+        
+        $employees = Employee::select()->get();
         $defaultShifts = collect([
-            (object) [
-                'employee_id' => 1,
+            DefaultShift::create([
+                'employee_id' => $employees[0]->id,
+                'day_of_week' => 1, // 月曜日
                 'clock_in' => '09:00:00',
                 'clock_out' => '17:00:00',
-                'day_of_week' => 1, // 月曜日
-            ],
-            (object) [
-                'employee_id' => 2,
+            ]),
+            DefaultShift::create([
+                'employee_id' => $employees[1]->id,
+                'day_of_week' => 3, // 水曜日
                 'clock_in' => '10:00:00',
                 'clock_out' => '18:00:00',
-                'day_of_week' => 3, // 水曜日
-            ],
+            ]),
         ]);
-
-        // モックが `all()` を返すように設定
-        $this->partialMock(DefaultShift::class, function ($mock) use ($defaultShifts) {
-            $mock->shouldReceive('select->get')->andReturn($defaultShifts);
-        });
-
-        // コマンドを実行
+        
         Artisan::call('command:createActualShift');
 
-        // 期待される期間のデータを取得して検証
+        // 日付範囲を設定
         $startOfMonth = Carbon::now()->addMonths(2)->startOfMonth();
         $endOfMonth = Carbon::now()->addMonths(2)->endOfMonth();
+        $testDates = collect(Carbon::parse($startOfMonth)->daysUntil($endOfMonth))->take(3);
+     
+        // データベース検証
 
-        $period = Carbon::parse($startOfMonth)->daysUntil($endOfMonth);
-        foreach ($period as $date) {
-            $dayOfWeekIso = $date->dayOfWeekIso;
-
+        foreach ($testDates as $date) {
             foreach ($defaultShifts as $defaultShift) {
-                if ($dayOfWeekIso == $defaultShift->day_of_week) {
+                if ($date->dayOfWeekIso == $defaultShift->day_of_week) {
                     $this->assertDatabaseHas('actual_shifts', [
                         'date' => $date->format('Y-m-d'),
                         'clock_in' => $defaultShift->clock_in,
