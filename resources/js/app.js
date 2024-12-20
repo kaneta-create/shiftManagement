@@ -2,6 +2,8 @@ import './bootstrap';
 import '../css/app.css';
 import '../css/micromodal.css';
 import './micromodal';
+import 'shepherd.js/dist/css/shepherd.css';
+
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
