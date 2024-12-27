@@ -176,7 +176,7 @@ class DefaultShiftController extends Controller
         $userId = User::select('id')->where('employee_number', $request->employee_number)->first();
         // dd($request, $userId->employee->id);
         // dd($userId->id);
-        if ($userId == null) {
+        if ($userId->employee->id == null) {
             return to_route('admins.index')->with([
                 'message' => 'この従業員は存在しません。',
                 'status' => 'danger'

@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use App\Models\User;
 use App\Models\employee;
+use Illuminate\Support\Facades\Auth;
 
 class StoreDefaultShiftRequest extends FormRequest
 {
@@ -34,8 +35,21 @@ class StoreDefaultShiftRequest extends FormRequest
             $rules["{$day}.start_time"] = ['nullable', 'date', 'date_format:H:i'];
             $rules["{$day}.end_time"] = ['nullable', 'date', 'date_format:H:i', "after:{$day}.start_time"];
         }
-
-        return [ 'employee_number' => ['required', 'numeric',Rule::exists('users', 'employee_number'),], $rules ];
+        
+        return [
+            'employee_number' => [
+                'required',
+                'numeric',
+                Rule::exists('users', 'employee_number')->where(function ($query) {
+                    $query->whereIn('id', function ($subQuery) {
+                        $subQuery->select('user_id')
+                            ->from('employees')
+                            ->where('organization_id', auth()->user()->employee->organization_id);
+                    });
+                }),
+            ],
+            $rules,
+        ];
         
     }
 }

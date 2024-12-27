@@ -54,8 +54,7 @@ class RegisteredUserController extends Controller
         
         employee::create([
             'user_id' => $user->id,
-            'organization_id' => 1,
-            // 'organization_id' => $organization->id,
+            'organization_id' => $organization->id,
             'authority' => $request->authority,
             'role' => $request->role
         ]);
