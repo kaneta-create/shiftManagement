@@ -18,7 +18,7 @@ const props = defineProps({
 });
 
 const filteredshifts = props.shifts.filter(shift => shift.full_date == props.Ymd_date && shift.employee_id == props.userId && shift.clock_in != shift.clock_out);
-console.log(filteredshifts);
+
 function formattedTime(time){
   if(time == 2400){
     return '24:00';

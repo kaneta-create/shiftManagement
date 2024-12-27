@@ -128,7 +128,7 @@ watch(() => selectMonth.selectedMonth, () => {
     updateShift(); // 実行したい別の関数
 }, { immediate: true });
 
-console.log(props.totalWorkingTimes[2][1]['total_working_hours'])
+
 const workTime = ref(['']);
 
 const totalTime = employee_id => {

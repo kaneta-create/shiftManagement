@@ -18,7 +18,7 @@ const props = defineProps({
     userRole: Object,
     errors: Object
 })
-console.log(props);
+
 const workDay = (employee_name, name, date, attendance_date) => {
     if(name === employee_name && date === attendance_date){
         return true;

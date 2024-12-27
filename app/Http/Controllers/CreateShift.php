@@ -20,7 +20,7 @@ class CreateShift extends Controller
     {
         $userId = Auth::id();
         $userRole = employee::select('authority')->where('user_id', $userId)->first();
-
+        // $totalWorkingHoursInHours = []; 
         for($i = 1; $i <= 3; $i++){
             
             $currentDate = Carbon::now()->copy(); 
@@ -51,6 +51,8 @@ class CreateShift extends Controller
                 $totalWorkingHours = 0;
                 $attendance_count = $workingHours->count();
                 // dd($workingHours);
+                // $totalWorkingHoursInHours = []; 
+
                 foreach ($workingHours as $workingHour) {
                         // clock_in と clock_out を Carbon インスタンスに変換
                         $clockIn = Carbon::createFromFormat('H:i:s', $workingHour->clock_in);
@@ -61,15 +63,15 @@ class CreateShift extends Controller
                         // 出勤時間を分単位で計算し、合計出勤時間に追加
                         $totalMinutes = $clockOut->diffInMinutes($clockIn);
                         $totalWorkingHours += $totalMinutes;
-                    
+                    }
 
                     // 合計時間を時間単位に変換
                     $totalWorkingHoursInHours[$i][$employeeId] = [
                         'total_working_hours' => number_format($totalWorkingHours / 60, 2),
-                        'employee_id' => $workingHour->employee_id,
+                        'employee_id' => $employeeId,
                         'attendance_count' => $attendance_count
                     ];
-                }
+                
             }
             $organization_id = employee::where('user_id', $userId)->value('organization_id');
             $employeeIds = Employee::where('organization_id', $organization_id)->pluck('id');

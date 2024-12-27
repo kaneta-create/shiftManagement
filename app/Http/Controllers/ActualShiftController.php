@@ -28,7 +28,7 @@ class ActualShiftController extends Controller
         $userRole = employee::select('authority')->where('user_id', $userId)->first();
         
         $logInUserName = Auth::user()->name;
-
+        $totalWorkingHoursInHours = [];
         //期間指定
         for($i = 1; $i <= 3; $i++){
             
