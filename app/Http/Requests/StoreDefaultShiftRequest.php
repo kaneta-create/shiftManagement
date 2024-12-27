@@ -33,10 +33,20 @@ class StoreDefaultShiftRequest extends FormRequest
             $rules["{$day}.end_time"] = ['nullable', 'date', 'date_format:H:i', "after:{$day}.start_time"];
         }
 
-        return [
-            'employee_number' => ['required', 'numeric',Rule::exists('users', 'employee_number'),],
-            $rules
-        ];
+        return array_merge([
+            'employee_number' => [
+                'required',
+                'numeric',
+                Rule::exists('users', 'employee_number')->where(function ($query) {
+                    $query->whereExists(function ($subQuery) {
+                        $subQuery->selectRaw(1)
+                            ->from('employees')
+                            ->whereColumn('employees.user_id', 'users.id')
+                            ->where('employees.organization_id', auth()->user()->organization_id);
+                    });
+                }),
+            ],
+        ], $rules);
         
     }
 }
