@@ -10,9 +10,10 @@ const props = defineProps({
     employees: Object,
     paginate:Object,
     userRole: Object,
-    alertMessage: String
+    alertMessage: String,
+    defaultShiftId: Object
 });
-
+console.log(props.defaultShiftId[7])
 const deleteEmployee = id => {
   Inertia.delete(route('admins.destroy', { admin: id }), {
     onBefore: () => confirm('本当に削除しますか?'),
@@ -84,7 +85,7 @@ const updateAuthority = () => {
                                         <Link as="button" :href="route('defaultShifts.edit', { defaultShift: employee.id })" dusk="edit-page-button" class="text-white text-nowrap border-b-2 bg-blue-500 mt-1 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded">更新</Link>
                                     </td> -->
                                     <td class="px-4 py-3 border-b-2 border-gray-200">
-                                        <Link as="button" :href="route('defaultShifts.edit', { defaultShift: employee.id })" 
+                                        <Link as="button" :href="route('defaultShifts.edit', { defaultShift: props.defaultShiftId[employee.id] })" 
                                             dusk="edit-page-button" 
                                             class="text-white text-nowrap border-b-2 bg-indigo-600 mt-1 border-0 py-2 px-2 focus:outline-none hover:bg-indigo-700 rounded flex items-center justify-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

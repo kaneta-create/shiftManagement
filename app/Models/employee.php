@@ -22,4 +22,9 @@ class employee extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function defaultShifts()
+    {
+        return $this->hasMany(DefaultShift::class, 'employee_id', 'id');
+    }
 }

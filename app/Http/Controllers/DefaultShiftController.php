@@ -233,8 +233,8 @@ class DefaultShiftController extends Controller
         $userId = Auth::id();
         // dd($userId);
         $userRole = employee::select('authority')->where('user_id', $userId)->first();
-
-        $defaultShifts = DefaultShift::select('id', 'employee_id', 'clock_in', 'clock_out', 'day_of_week')->where('employee_id', $defaultShift->id)->get();
+        
+        $defaultShifts = DefaultShift::select('id', 'employee_id', 'clock_in', 'clock_out', 'day_of_week')->where('employee_id', $defaultShift->employee_id)->get();
         // dd($defaultShifts[0]->employee->user->employee_number);
         if ($defaultShifts->isEmpty()) {
             return redirect()->route('admins.index')->with([
