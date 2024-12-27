@@ -229,7 +229,6 @@ class DefaultShiftController extends Controller
      */
     public function edit(DefaultShift $defaultShift)
     {   
-        
         $userId = Auth::id();
         // dd($userId);
         $userRole = employee::select('authority')->where('user_id', $userId)->first();

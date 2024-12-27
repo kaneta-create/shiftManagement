@@ -23,6 +23,7 @@ class EmployeeController extends Controller
     public function index()
     {
         $userId = Auth::id();
+        $userNum = User::select('employee_number')->where('id', $userId)->first();
         
         $organization_id = employee::where('user_id', $userId)->value('organization_id');
         $employeeIds = Employee::where('organization_id', $organization_id)->pluck('id');
@@ -42,8 +43,9 @@ class EmployeeController extends Controller
         }
         // dd($defaultShiftId, $employees);
 
-        $userId = Auth::id();
+        
         $userRole = employee::select('authority')->where('user_id', $userId)->first();
+        // $logInEmployeeNumber = employee::select('authority')->where('user_id', $userId)->first();
         // dd($userId);
         foreach($employees as $employee){
             $name = $employee->user->name;
@@ -71,7 +73,8 @@ class EmployeeController extends Controller
             'paginate' => $employees,
             'employees' => $employeeInformations,
             'userRole' => $userRole,
-            'defaultShiftId' => $defaultShiftId
+            'defaultShiftId' => $defaultShiftId,
+            'userNum' => $userNum->employee_number
         ]);
     }
 
