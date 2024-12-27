@@ -181,31 +181,33 @@ class DefaultShiftController extends Controller
                 'message' => 'この従業員は存在しません。',
                 'status' => 'danger'
             ]);
-        }
-        if(DB::table('default_shifts')->where('employee_id', $userId->id)->exists()) {
-            return to_route('admins.index')
-            ->with([
-                'message' => '登録済みです。変更がある場合は変更画面から変更してください。',
-                'status' => 'danger'
-            ]);
         } else {
-            $daysOfWeek = ['月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日'];
-            foreach($daysOfWeek as $day){
-                if (!is_null($request[$day]['start_time']) && !is_null($request[$day]['end_time'])){
-                    DefaultShift::create([
-                        'employee_id' => $userId->employee->id,
-                        'day_of_week' => $request[$day]['dayOfNameNumber'],
-                        'clock_in' => $request[$day]['start_time'],
-                        'clock_out' => $request[$day]['end_time'],
-                    ]);
+            if(DB::table('default_shifts')->where('employee_id', $userId->id)->exists()) {
+                return to_route('admins.index')
+                ->with([
+                    'message' => '登録済みです。変更がある場合は変更画面から変更してください。',
+                    'status' => 'danger'
+                ]);
+            } else {
+                $daysOfWeek = ['月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日'];
+                foreach($daysOfWeek as $day){
+                    if (!is_null($request[$day]['start_time']) && !is_null($request[$day]['end_time'])){
+                        DefaultShift::create([
+                            'employee_id' => $userId->employee->id,
+                            'day_of_week' => $request[$day]['dayOfNameNumber'],
+                            'clock_in' => $request[$day]['start_time'],
+                            'clock_out' => $request[$day]['end_time'],
+                        ]);
+                    }
                 }
+                return to_route('admins.index')
+                ->with([
+                    'message' => '登録しました。',
+                    'status' => 'success'
+                ]);
             }
-            return to_route('admins.index')
-            ->with([
-                'message' => '登録しました。',
-                'status' => 'success'
-            ]);
         }
+        
     }
 
     /**

@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use App\Models\User;
+use App\Models\employee;
 
 class StoreDefaultShiftRequest extends FormRequest
 {
@@ -27,26 +29,13 @@ class StoreDefaultShiftRequest extends FormRequest
         $days = ['月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日'];
 
         $rules = [];
-
+        
         foreach ($days as $day) {
             $rules["{$day}.start_time"] = ['nullable', 'date', 'date_format:H:i'];
             $rules["{$day}.end_time"] = ['nullable', 'date', 'date_format:H:i', "after:{$day}.start_time"];
         }
 
-        return array_merge([
-            'employee_number' => [
-                'required',
-                'numeric',
-                Rule::exists('users', 'employee_number')->where(function ($query) {
-                    $query->whereExists(function ($subQuery) {
-                        $subQuery->selectRaw(1)
-                            ->from('employees')
-                            ->whereColumn('employees.user_id', 'users.id')
-                            ->where('employees.organization_id', auth()->user()->organization_id);
-                    });
-                }),
-            ],
-        ], $rules);
+        return [ 'employee_number' => ['required', 'numeric',Rule::exists('users', 'employee_number'),], $rules ];
         
     }
 }
