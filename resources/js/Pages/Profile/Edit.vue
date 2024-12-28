@@ -1,4 +1,4 @@
-<!-- <script setup>
+<script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
@@ -39,4 +39,4 @@ defineProps({
             </div>
         </div>
     </AuthenticatedLayout>
-</template> -->
+</template>
