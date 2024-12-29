@@ -27,7 +27,7 @@ const storeEmployee = () => {
 const generateTemporaryPassword = () => {
     form.temporary_password =  Math.floor(10000 + Math.random() * 90000);
 }
-console.log(props.errors.name);
+
 </script>
 
 <template>
