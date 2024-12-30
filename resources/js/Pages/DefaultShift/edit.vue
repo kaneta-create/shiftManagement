@@ -11,7 +11,7 @@ const props = defineProps({
     userRole: Object,
     errors: Object
 });
-console.log(props.defaultShifts)
+
 const day_of_week_name = {
     1: '月曜日',
     2: '火曜日',

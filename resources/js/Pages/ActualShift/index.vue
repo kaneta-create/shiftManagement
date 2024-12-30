@@ -18,7 +18,6 @@ const props = defineProps({
     userRole: Object,
     errors: Object
 })
-console.log(props.names);
 const workDay = (employee_name, name, date, attendance_date) => {
     if(name === employee_name && date === attendance_date){
         return true;
@@ -163,7 +162,7 @@ const printPage = () => {
 const receivedShiftUpdates = ref([]);
 const handleShiftDataUpdate = (updatedShifts) => {
   receivedShiftUpdates.value.push(...updatedShifts);
-  console.log('親コンポーネントで受け取ったデータ: ', receivedShiftUpdates.value);
+  
 };
 
 
@@ -278,7 +277,7 @@ const isHovered = ref(false); // ホバー状態を管理
                                     </div>
                                     
                                 </div>
-                                <div v-if="receivedShiftUpdates.length == 0" class="flex justify-end mt-4">
+                                <div v-if="receivedShiftUpdates.length == 0 || props.shifts.length > 0" class="flex justify-end mt-4">
                                     <button type="button" id="printBtn" @click="printPage" class="bg-indigo-600 hover:bg-indigo-700 flex text-white py-2 px-4 rounded">
                                         印刷
                                     </button>
@@ -288,10 +287,14 @@ const isHovered = ref(false); // ホバー状態を管理
                             <div class="print_shift">
                             <div class="overflow-x-auto">
                                   <!-- ホバー時に表示するツールチップ -->
+                                   
                                 <div v-if="isHovered" class="absolute bg-black text-white text-xs rounded py-1 px-2">
                                     クリックして月を変更できます
                                 </div>
-                            <table id="table1"class="min-w-full bg-white border border-gray-300">
+                            <div v-if="props.shifts.length == 0" class="mb-8">
+                                <h1>勤務時間登録を行うとシフト表が表示されます。</h1>
+                            </div>
+                            <table v-else id="table1"class="min-w-full bg-white border border-gray-300">
                                 <thead>
                                     <tr>
                                         <th id="th1" class="border border-gray-300 bg-gray-100">
@@ -325,7 +328,7 @@ const isHovered = ref(false); // ホバー状態を管理
                                 <tbody>
                                     <tr v-for="(name, index) in props.names" :key="index" class="hover:bg-blue-200">
                                         <td id="td1" class="border border-gray-300 text-sm px-2 py-2 bg-gray-500 text-white">{{ name.employee_name }}</td>
-                                        <td id="td2" v-for="(day, dayIndex) in dayInfos" :key="dayIndex" class="border border-gray-30 py-2">
+                                        <td id="td2" v-for="(day, dayIndex) in dayInfos" :key="dayIndex" class="border border-gray-30 py-2 bg-gray-50">
                                             <div v-for="(shift, shiftIndex) in dayShiftInfos" :key="shiftIndex">
                                                 <div v-if="workDay(shift.employee_name, name.employee_name, day.date, shift.date)" class="text-center text-xs">
                                                     <div v-if="!(shift.clock_in === 900 && shift.clock_out === 900)">

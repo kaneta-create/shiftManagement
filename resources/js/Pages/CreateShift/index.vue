@@ -273,10 +273,14 @@ const isHovered = ref(false); // ホバー状態を管理
                             <!-- <button class="text-white bg-indigo-500 border-0 text-sm px-4 py-3 focus:outline-none hover:bg-indigo-600 rounded">登録</button> -->
 
                             <div class="overflow-x-auto">
+                                      
                                 <div v-if="isHovered" class="absolute bg-black text-white text-xs rounded py-1 px-2">
                                     クリックして月を変更できます
                                 </div>
-                            <table class="min-w-full bg-white border border-gray-300">
+                            <div v-if="props.shifts.length == 0" class="mb-8"> 
+                                <h1>勤務時間登録を行うとシフト表が表示されます。</h1>
+                            </div>
+                            <table v-else class="min-w-full bg-white border border-gray-300">
                                 <thead>
                                     <tr>
                                         <th id="th1" class="border border-gray-300 test-white bg-gray-100 ">

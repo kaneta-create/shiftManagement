@@ -12,7 +12,7 @@ const props = defineProps({
 })
 
 const showingNavigationDropdown = ref(false);
-console.log(props.userRole)
+
 </script>
 
 <template>
