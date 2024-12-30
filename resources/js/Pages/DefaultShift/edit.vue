@@ -11,7 +11,7 @@ const props = defineProps({
     userRole: Object,
     errors: Object
 });
-console.log(props.employeeNumber)
+console.log(props.defaultShifts)
 const day_of_week_name = {
     1: '月曜日',
     2: '火曜日',
@@ -110,7 +110,7 @@ const timeOptions = generateTimeOptions();
 
                             <p class="lg:w-2/3 mx-auto text-center leading-relaxed text-sm text-gray-600">社員番号と時間を入力して勤務時間を変更してください</p>
                         </div>
-                        <form @submit.prevent="updateDefaultShift(props.employee_id)">
+                        <form @submit.prevent="updateDefaultShift(props.defaultShifts[0].id)">
                             <div class="text-center my-8">
                                 <label for="employee_number" class="mr-2">社員番号:</label>
                                 <input type="text" id="employee_number" required name="employee_number" v-model="form.employeeNumber" class="rounded">

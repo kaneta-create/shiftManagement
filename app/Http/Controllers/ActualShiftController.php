@@ -42,7 +42,7 @@ class ActualShiftController extends Controller
             } 
 
             $userIds = DB::table('users')->pluck('id');
-            // dd($userIds);
+           
             foreach ($userIds as $employeeId) {
                 $workingHours = DB::table('actual_shifts')
                     ->where('employee_id', $employeeId)
@@ -82,15 +82,16 @@ class ActualShiftController extends Controller
                 ];
                 
             }
+            // dd($totalWorkingHoursInHours);
             
-            // dd($totalWorkingHours);
             $organization_id = employee::where('user_id', $userId)->value('organization_id');
             $employeeIds = Employee::where('organization_id', $organization_id)->pluck('id');
-    
+            
             $shifts[] = ActualShift::select('employee_id', 'clock_in', 'clock_out', 'day_of_week', 'date')
             ->whereIn('employee_id', $employeeIds)
             ->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
             ->get();
+            
             $userName = User::select('name')->get();
             $shiftInformations = []; // 配列の初期化
             $names = []; // 配列の初期化
@@ -126,6 +127,7 @@ class ActualShiftController extends Controller
                 
             };
         };   //for分の終了地点
+        
         $totalWorkingTime = intval("");
         for($j = 0; $j <= 2; $j++){
         foreach($shifts[$j] as $shift){
@@ -172,6 +174,7 @@ class ActualShiftController extends Controller
 
             $workingTime = $clockOut->diffInHours($clockIn);
             $totalWorkingTime += $workingTime;
+            
             if (!in_array($employeeName, $addedNames)) {
                 $names[] = [
                     'employee_name' => $employeeName,
@@ -215,7 +218,7 @@ class ActualShiftController extends Controller
             
         };
         };
-        
+       
         return Inertia::render('ActualShift/index', [
             'names' => $names,
             'shifts' => $shiftInformations,

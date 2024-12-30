@@ -222,7 +222,7 @@ const isHovered = ref(false); // ホバー状態を管理
                             <form @submit.prevent="updateActualShift(props.userId)">
 
                             <h1 class="sm:text-4xl text-3xl font-mono title-font mb-4 text-gray-900">シフト表</h1>
-                            <p id="explanation" class="lg:w-2/3 mx-auto text-center leading-relaxed text-sm text-gray-600">変更したい日付を選択して入力してください</p>
+                            <p id="explanation" class="lg:w-2/3 mx-auto text-center leading-relaxed text-sm text-gray-600">変更したい日付を選択して入力してください。</p>
 
                             
                             <div id="changeShift" class="mb-4">

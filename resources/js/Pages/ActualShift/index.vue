@@ -18,7 +18,7 @@ const props = defineProps({
     userRole: Object,
     errors: Object
 })
-
+console.log(props.names);
 const workDay = (employee_name, name, date, attendance_date) => {
     if(name === employee_name && date === attendance_date){
         return true;
@@ -234,7 +234,7 @@ const isHovered = ref(false); // ホバー状態を管理
                             <FlashMessage/>
                             <form @submit.prevent="updateActualShift(props.userId)">
                             <h1 class="sm:text-4xl text-3xl font-mono title-font mb-4 text-gray-900">シフト表</h1>
-                            <p id="explanation" class="lg:w-2/3 mx-auto text-center leading-relaxed text-sm text-gray-600">変更したい日付を選択して入力してください</p>
+                            <p id="explanation" class="lg:w-2/3 mx-auto text-center leading-relaxed text-sm text-gray-600">変更したい日付を選択して入力してください。</p>
                             
                             <div id="change_shift" class="mb-4">
                                 <div v-if="receivedShiftUpdates && receivedShiftUpdates.length > 0" class="mb-4">

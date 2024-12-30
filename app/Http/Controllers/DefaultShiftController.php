@@ -172,10 +172,26 @@ class DefaultShiftController extends Controller
     public function store(StoreDefaultShiftRequest $request)
     {
         // dd($request);
-        //リクエストで送られてきた社員番号からemployee_idを取得し、このテーブルのカラムに保存したい
+        $startOfMonth = Carbon::now()->startOfMonth(); 
+        $endOfMonth = Carbon::now()->addMonths(2)->endOfMonth(); 
+        $now = Carbon::now();
+        $period = CarbonPeriod::create($startOfMonth, $endOfMonth);
+
+        Carbon::setLocale('ja');
+        foreach($period as $date){
+            $month[] = [
+                'date' => $date->format('Y-m-d'),
+                'day_of_week_iso' => $date->dayOfWeekIso,
+                'day_of_week' => $date->translatedFormat('D'),
+                'year' => $date->format('Y'),
+                'month' => $date->translatedFormat('M')
+            ];
+            $shiftDates[] = [
+                $date->format('j') => $date->translatedFormat('D')
+            ];
+        }
         $userId = User::select('id')->where('employee_number', $request->employee_number)->first();
-        // dd($request, $userId->employee->id);
-        // dd($userId->id);
+        
         if ($userId->employee->id == null) {
             return to_route('admins.index')->with([
                 'message' => 'この従業員は存在しません。',
@@ -192,14 +208,29 @@ class DefaultShiftController extends Controller
                 $daysOfWeek = ['月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日'];
                 foreach($daysOfWeek as $day){
                     if (!is_null($request[$day]['start_time']) && !is_null($request[$day]['end_time'])){
-                        DefaultShift::create([
+                        $defaultShifts[] = DefaultShift::create([
                             'employee_id' => $userId->employee->id,
                             'day_of_week' => $request[$day]['dayOfNameNumber'],
                             'clock_in' => $request[$day]['start_time'],
                             'clock_out' => $request[$day]['end_time'],
                         ]);
                     }
+                }    
+                foreach ($month as $day) {
+                    foreach ($defaultShifts as $defaultShift) {
+                        if ($day['day_of_week_iso'] == $defaultShift->day_of_week) {
+                            // 実シフトデータを作成
+                            ActualShift::create([
+                                'date' => $day['date'],
+                                'clock_in' => $defaultShift->clock_in,
+                                'clock_out' => $defaultShift->clock_out,
+                                'day_of_week' => $day['day_of_week_iso'],
+                                'employee_id' => $defaultShift->employee_id,
+                            ]);
+                        }
+                    }
                 }
+                
                 return to_route('admins.index')
                 ->with([
                     'message' => '登録しました。',
@@ -207,6 +238,10 @@ class DefaultShiftController extends Controller
                 ]);
             }
         }
+        // defaultShiftテーブルのデータを取得
+        // $defaultShifts = DefaultShift::select('id', 'employee_id', 'clock_in', 'clock_out', 'day_of_week')->get();
+
+        
         
     }
 
@@ -270,7 +305,6 @@ class DefaultShiftController extends Controller
     
     public function update(UpdateDefaultShiftRequest $request, DefaultShift $defaultShift)
     {
-        // dd($request);
         $data = $request->all();
         $dayOfWeekNames = ['月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日'];
         
@@ -279,10 +313,13 @@ class DefaultShiftController extends Controller
         if (!$userId) {
             return back()->withErrors(['employeeNumber' => '従業員番号が見つかりません']);
         }
-
+ $startOfMonth = Carbon::now()->startOfMonth();
+            $endOfMonth = Carbon::now()->addMonths(2)->endOfMonth();
+            $period = CarbonPeriod::create($startOfMonth, $endOfMonth);
         // トランザクションの開始
         DB::beginTransaction();
         try {
+           
             foreach ($dayOfWeekNames as $dayOfWeek) {
                 if (isset($data[$dayOfWeek])) {
                     $updateShift = $data[$dayOfWeek];
@@ -299,7 +336,7 @@ class DefaultShiftController extends Controller
                         }
                     } else {
                         // それ以外の場合、レコードを作成または更新
-                        DefaultShift::updateOrCreate(
+                        $defa[] = DefaultShift::updateOrCreate(
                             ['employee_id' => $userId, 'day_of_week' => $updateShift['dayOfNameNumber']],
                             [
                                 'clock_in' => $updateShift['start_time'], 
@@ -308,9 +345,31 @@ class DefaultShiftController extends Controller
                                 'employee_id' => $userId,
                             ]
                         );
+                        
                     }
                 }
+                $allShift = $data[$dayOfWeek];
+                // dd($allShift);
+                foreach ($period as $date) {
+                    if ($date->dayOfWeekIso == $updateShift['dayOfNameNumber']) {
+                        ActualShift::updateOrCreate(
+                            [
+                                'employee_id' => $userId,
+                                'date' => $date->format('Y-m-d'),
+                            ],
+                            [
+                                'clock_in' => $allShift['start_time'] ?? '09:00:00' ,
+                                'clock_out' => $allShift['end_time'] ?? '09:00:00',
+                                'day_of_week' => $allShift['dayOfNameNumber'],
+                            ]
+                        );
+                    }
+                }
+
             }
+            
+
+            
 
             // トランザクションをコミット
             DB::commit();
