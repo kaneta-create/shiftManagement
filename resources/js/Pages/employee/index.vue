@@ -27,6 +27,10 @@ const deleteEmployee = id => {
     location.reload()
 }
 
+function showAlert() {
+    alert('勤務時間登録を行なってください。');
+}
+
 const updateAuthority = () => {
     Inertia.put(route('admins.update', {admin:props.id}), form);
 }
@@ -91,16 +95,20 @@ const updateAuthority = () => {
                                         <Link as="button" :href="route('defaultShifts.edit', { defaultShift: employee.id })" dusk="edit-page-button" class="text-white text-nowrap border-b-2 bg-blue-500 mt-1 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded">更新</Link>
                                     </td> -->
                                     <td class="px-4 py-3 border-b-2 border-gray-200">
-                                        <Link v-if="props.defaultShiftId[employee.id]" as="button" :href="route('defaultShifts.edit', { defaultShift: props.defaultShiftId[employee.id] ?? 0 })" 
-                                            dusk="edit-page-button" 
-                                            class="text-white text-nowrap border-b-2 bg-indigo-600 mt-1 border-0 py-2 px-2 focus:outline-none hover:bg-indigo-700 rounded flex items-center justify-center">
+                                        <div v-if="props.defaultShiftId[employee.id]">
+                                            <Link as="button" :href="route('defaultShifts.edit', { defaultShift: props.defaultShiftId[employee.id] ?? 0 })"
+                                                dusk="edit-page-button"
+                                                class="text-white text-nowrap border-b-2 bg-indigo-600 mt-1 border-0 py-2 px-2 focus:outline-none hover:bg-indigo-700 rounded flex items-center justify-center w-11 h-11"
+                                            >
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
                                             </svg>
-                                        </Link>
-                                        <div v-else class="text-white text-nowrap border-b-2 bg-indigo-600 mt-1 border-0 py-2 px-2 focus:outline-none rounded flex items-center justify-center w-11 h-11">
+                                            </Link>
+                                        </div>
+
+                                        <div v-else @click="showAlert" class="text-white text-nowrap border-b-2 bg-indigo-600 mt-1 border-0 py-2 px-2 focus:outline-none hover:bg-indigo-700 rounded flex items-center justify-center w-11 h-11">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
                                             </svg>
                                         </div>
                                     </td>
